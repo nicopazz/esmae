@@ -56,7 +56,7 @@ export default function ProductGrid({ products }: { products: any[] }) {
             <div className="space-y-1">
               <div className="flex justify-between text-sm">
                 <h3 className="font-medium text-gray-900">{product.name}</h3>
-                <span className="font-semibold text-gray-900">${Number(product.price).toLocaleString()}</span>
+                <span className="font-semibold text-gray-900">${Number(product.price).toLocaleString("es-AR")}</span>
               </div>
               <p className="text-sm text-gray-500 capitalize">{product.category.name}</p>
             </div>
