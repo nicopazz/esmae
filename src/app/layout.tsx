@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext"; 
 import AuthProvider from "@/components/SessionProvider";
+import { Toaster } from "react-hot-toast";
 
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
@@ -22,9 +23,26 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`antialiased`}>
-        {/* 2. Envuelve todo dentro del AuthProvider */}
         <AuthProvider>
             <CartProvider>
+              <Toaster 
+                position="top-center"
+                toastOptions={{
+                  style: {
+                    background: '#000',
+                    color: '#fff',
+                    borderRadius: '4px',
+                    fontSize: '14px',
+                  },
+                  success: {
+                    iconTheme: {
+                      primary: '#fff',
+                      secondary: '#000',
+                    },
+                  },
+                }}
+              />
+              
               <Navbar /> 
               {children}
             </CartProvider>

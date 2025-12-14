@@ -3,7 +3,8 @@
 import { useState, useEffect, use } from "react"; 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image"; // Importante para la imagen
+import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 // 1. Definimos params como una Promesa
 export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
@@ -71,7 +72,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // CORREGIDO: Usamos `${id}` aquí también
+      
       const res = await fetch(`/api/products/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -79,11 +80,12 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       });
 
       if (res.ok) {
-        alert("¡Producto actualizado!");
+      
+        toast.success("Producto guardado correctamente ✨"); 
         router.push("/admin");
         router.refresh();
       } else {
-        alert("Error al guardar");
+        toast.error("Error al guardar el producto");
       }
     } catch (error) {
       alert("Error al guardar");

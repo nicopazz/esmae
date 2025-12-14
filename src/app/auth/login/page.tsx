@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
+   
 
     // Intentamos iniciar sesión con las credenciales
     const res = await signIn("credentials", {
@@ -28,9 +29,10 @@ export default function LoginPage() {
     });
 
     if (res?.error) {
-      setError("Usuario o contraseña incorrectos");
+      toast.error("Usuario o contraseña incorrectos ❌");
       setLoading(false);
     } else {
+      toast.success("¡Bienvenido de nuevo! 👋");
       // Si todo sale bien, vamos al admin
       router.push("/admin");
       router.refresh();

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 export default function NewProductPage() {
   const router = useRouter();
@@ -64,11 +65,11 @@ export default function NewProductPage() {
       });
 
       if (res.ok) {
-        alert("Producto creado con éxito!");
-        router.push("/admin"); // Volver al panel
+        toast.success("Producto guardado correctamente ✨"); 
+        router.push("/admin");
         router.refresh();
       } else {
-        alert("Error al crear producto");
+        toast.error("Error al guardar el producto");
       }
     } catch (error) {
       console.error(error);

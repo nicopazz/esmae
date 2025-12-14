@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { toast } from "react-hot-toast";
 
 interface ModalProps {
   product: any;
@@ -29,11 +30,13 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
   const isOutOfStock = currentQtyInCart >= (product.stock || 0);
 
   const handleAddToOrder = () => {
-    if (isOutOfStock) return; // Doble seguridad
-
+    if (isOutOfStock) {
+        toast.error("No hay suficiente stock 😓");
+        return;
+    }
     addItem(product);
-    setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 2000);
+    toast.success(`${product.name} agregado al pedido 🛒`);
+    onClose(); 
   };
 
   // 3. Función para enviar a WhatsApp
