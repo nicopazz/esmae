@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
       {/* Tabla de Productos */}
       {/* 3. CAMBIO CLAVE: overflow-x-auto permite scroll horizontal en celular */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
-        <table className="w-full text-left text-sm text-gray-600 min-w-200"> {/* min-w fuerza el ancho para que no se aplaste en móvil */}
+        <table className="w-full text-left text-sm text-gray-600 min-w-200"> 
           <thead className="bg-gray-50 text-gray-900 font-semibold uppercase tracking-wider text-xs border-b border-gray-200">
             <tr>
               <th className="px-6 py-4">Imagen</th> {/* Nueva Columna */}
