@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { useSession } from "next-auth/react"; // <--- 1. Importar hook de sesión
-import { ShoppingBag, User, LayoutDashboard } from "lucide-react"; // <--- 2. Importar iconos
+import { useSession } from "next-auth/react";
+import { ShoppingBag, User, LayoutDashboard } from "lucide-react"; 
+import Image from "next/image";
 
 export default function Navbar() {
   const { totalItems } = useCart();
@@ -14,9 +15,14 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         
         {/* LOGO */}
-        <Link href="/" className="text-2xl font-serif font-bold tracking-tight">
-          Esmae.
-        </Link>
+        <Image
+          src="/esmaepng.png"
+          alt="Esmae"
+          width={120}
+          height={40}
+          priority
+        />
+        
 
         {/* MENÚ CENTRO (Opcional, depende de tu diseño) */}
         <div className="hidden md:flex gap-8 text-sm font-medium text-gray-600">

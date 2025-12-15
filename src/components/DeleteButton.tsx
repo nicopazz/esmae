@@ -11,7 +11,7 @@ export default function DeleteButton({ id }: { id: number }) {
   const handleDelete = () => {
   // Disparamos la alerta de confirmación
   toast((t) => (
-    <div className="flex flex-col gap-4 p-2 min-w-[300px]">
+    <div className="flex flex-col gap-4 p-2 min-w-75">
       <div className="text-center">
         <span className="text-2xl mb-2 block">⚠️</span>
         <h3 className="font-bold text-lg text-white">¿Borrar definitivamente?</h3>
@@ -46,6 +46,7 @@ export default function DeleteButton({ id }: { id: number }) {
                 toast.error("No se pudo eliminar");
                 setIsDeleting(false); // Importante revertir si falla
               }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
               toast.error("Ocurrió un error");
               setIsDeleting(false);

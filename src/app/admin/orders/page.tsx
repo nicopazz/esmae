@@ -1,4 +1,5 @@
 import prisma from "@/lib/prisma";
+import OrderStatus from "@/components/OrderStatus";
 
 export default async function AdminOrders() {
   // 1. Obtener la fecha de hoy (inicio del día)
@@ -129,17 +130,7 @@ export default async function AdminOrders() {
                   </td>
 
                   <td className="px-6 py-4">
-                    <span
-                      className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${
-                        order.status === "pendiente"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : order.status === "completado"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
+                    <OrderStatus id={order.id} initialStatus={order.status} />
                   </td>
 
                   <td className="px-6 py-4 text-xs text-gray-400">

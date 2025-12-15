@@ -1,52 +1,45 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import AdminSidebar from "@/components/AdminSidebar"; // <--- Importamos el componente que acabamos de crear
+import { Menu } from "lucide-react";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="flex min-h-screen bg-gray-100 font-sans">
+    <div className="flex h-screen bg-gray-100 font-sans overflow-hidden">
       
-      {/* 1. SIDEBAR (Barra Lateral) */}
-      <aside className="w-64 bg-black text-white flex-shrink-0 hidden md:block">
-        <div className="p-6">
-          <h2 className="text-2xl font-serif font-bold tracking-tight">Esmae Admin</h2>
-        </div>
+      {/* 1. SIDEBAR INTELIGENTE (Le pasamos el control de abrir/cerrar) */}
+      <AdminSidebar 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
 
-        <nav className="mt-6 px-4 space-y-2">
-          <Link 
-            href="/admin" 
-            className="flex items-center gap-3 px-4 py-3 text-sm font-medium bg-gray-900 rounded-md text-white"
+      {/* 2. CONTENEDOR PRINCIPAL */}
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        {/* CABECERA MÓVIL (Solo visible en celular md:hidden) */}
+        <header className="md:hidden bg-white border-b border-gray-200 p-4 flex items-center justify-between shrink-0">
+          <span className="text-xl font-serif font-bold">Esmae Admin</span>
+          <button 
+            onClick={() => setIsSidebarOpen(true)}
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none"
           >
-            📦 Productos
-          </Link>
-          <Link 
-            href="/admin/orders" 
-            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-900 rounded-md transition-colors"
-          >
-            🛒 Pedidos
-          </Link>
-          <Link 
-            href="/" 
-            className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-400 hover:text-white hover:bg-gray-900 rounded-md transition-colors mt-10 border-t border-gray-800"
-          >
-            ⬅ Volver a la web
-          </Link>
-        </nav>
-      </aside>
+            <Menu size={24} />
+          </button>
+        </header>
 
-      {/* 2. CONTENIDO PRINCIPAL */}
-      <main className="flex-1 p-8 overflow-y-auto">
-        {/* Cabecera Móvil (solo se ve en celular) */}
-        <div className="md:hidden mb-6 flex justify-between items-center">
-             <h1 className="text-xl font-bold">Esmae Admin</h1>
-             <Link href="/" className="text-sm underline">Salir</Link>
-        </div>
+        {/* CONTENIDO DE LAS PÁGINAS (Con scroll propio) */}
+        <main className="flex-1 overflow-auto p-4 md:p-8">
+           {children}
+        </main>
 
-        {/* Aquí se renderizarán las páginas del admin */}
-        {children}
-      </main>
+      </div>
     </div>
   );
 }

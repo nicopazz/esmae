@@ -44,7 +44,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         setLoading(false);
       })
       .catch(err => console.error(err));
-  }, [id]); // CORREGIDO: La dependencia es [id], NO [params.id]
+  }, [id, router]); // CORREGIDO: La dependencia es [id], NO [params.id]
 
   // ... (Funciones de carga de imagen y cambios de input se mantienen igual) ...
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +59,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: data });
       const json = await res.json();
       setImageUrl(json.secure_url);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Error subiendo imagen");
     }
@@ -87,6 +88,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       } else {
         toast.error("Error al guardar el producto");
       }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Error al guardar");
     }

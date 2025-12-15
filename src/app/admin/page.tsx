@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import Link from "next/link";
-import DeleteButton from "@/components/DeleteButton"; // <--- Importar
-
+import DeleteButton from "@/components/DeleteButton"; 
 export default async function AdminDashboard() {
   // 1. Buscamos todos los productos (incluyendo su categoría)
   const products = await prisma.product.findMany({
