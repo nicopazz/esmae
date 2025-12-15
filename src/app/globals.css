@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+html {
+  scroll-behavior: smooth; /* <--- Esto hace la magia del deslizamiento suave */
+}

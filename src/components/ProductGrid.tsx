@@ -33,7 +33,7 @@ export default function ProductGrid({ products }: { products: any[] }) {
             onClick={() => openModal(product)} // <--- AL HACER CLICK, ABRIMOS MODAL
           >
             {/* Imagen */}
-            <div className="relative w-full aspect-3/4 mb-4 overflow-hidden rounded-md bg-gray-50">
+            <div className="relative w-full aspect-3/4 mb-4 overflow-hidden rounded-2xl bg-gray-50">
               {product.images[0] ? (
                 <img 
                   src={product.images[0].url} 

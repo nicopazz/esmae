@@ -83,8 +83,10 @@ export default function Navbar() {
               <Menu size={24} strokeWidth={1.5} />
             </button>
             <div className="hidden md:flex gap-8 text-sm font-medium text-gray-600 tracking-wide">
-              <Link href="/" className="hover:text-black transition-colors">Catálogo</Link>
-              <Link href="/#contacto" className="hover:text-black transition-colors">Contacto</Link>
+              <Link href="/" className="hover:text-black transition-colors">Inicio</Link>
+              <Link href="#colecciones" className="hover:text-black transition-colors">Colecciones</Link>
+              <Link href="#catalogo" className="hover:text-black transition-colors">Catálogo</Link>
+              <Link href="#footer" className="hover:text-black transition-colors">Contacto</Link>
             </div>
           </div>
 
@@ -166,15 +168,33 @@ export default function Navbar() {
           </div>
 
           <nav className="flex flex-col gap-6">
+
             <Link 
               href="/" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-between text-lg font-medium text-gray-800"
             >
+              Inicio <ChevronRight size={16} className="text-gray-400" />
+            </Link>
+
+            <Link 
+              href="#colecciones" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-between text-lg font-medium text-gray-800"
+            >
+              Colecciones <ChevronRight size={16} className="text-gray-400" />
+            </Link>
+
+            <Link 
+              href="#catalogo" 
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center justify-between text-lg font-medium text-gray-800"
+            >
               Catálogo <ChevronRight size={16} className="text-gray-400" />
             </Link>
+
             <Link 
-              href="/#contacto" 
+              href="#footer" 
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-between text-lg font-medium text-gray-800"
             >

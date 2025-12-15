@@ -27,17 +27,18 @@ export default function Hero() {
 
         {/* Botones de Acción */}
         <div className="flex flex-wrap gap-4 pt-4 justify-center md:justify-start w-full relative z-10">
-          {/* Enlace al Catálogo (Página creada en el paso 3) */}
+          
+          {/* Enlace al Catálogo (Scroll hacia abajo) */}
           <Link 
-            href="/catalogo" 
+            href="#catalogo" 
             className="px-8 py-3 md:py-4 bg-gray-900 text-white font-medium rounded-sm hover:bg-black transition-all shadow-lg hover:shadow-xl"
           >
             Ver Catálogo
           </Link>
 
-          {/* Enlace a Colecciones */}
+          {/* Enlace a Colecciones (Scroll hacia abajo) */}
           <Link 
-            href="/colecciones" 
+            href="#colecciones" 
             className="px-8 py-3 md:py-4 bg-transparent border border-gray-200 text-gray-900 font-medium rounded-sm hover:border-gray-900 transition-all flex items-center gap-2 group"
           >
             Explorar 
@@ -54,7 +55,6 @@ export default function Hero() {
         {/* Contenedor de Imagen con forma única */}
         <div className="relative h-96 md:h-150 w-full max-w-lg rounded-t-[10rem] rounded-b-4xl md:rounded-b-[10rem] overflow-hidden shadow-2xl bg-gray-100">
              {/* Usamos el componente Image para carga rápida */}
-             {/* Puedes usar una foto local '/hero.jpg' o la de Unsplash si configuras next.config.js */}
              <Image 
                src="/heroimg.jpg" 
                alt="Espejo Esmae Ambiente" 
