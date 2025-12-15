@@ -65,6 +65,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
     }
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));

@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [loading, setLoading] = useState(false);
   
   const [form, setForm] = useState({
@@ -40,15 +40,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="min-h-[70vh] flex items-center justify-center px-4">
       <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md border border-gray-100">
         
         {/* Encabezado */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-serif font-bold text-gray-900">Esmae.</h1>
-          <p className="text-sm text-gray-500 mt-2 tracking-widest uppercase text-xs font-bold">
-            Acceso Administrativo
-          </p>
+          <h1 className="text-gray-500 mt-2 tracking-widest uppercase text-xs font-bold">Iniciar Sesión</h1>
+          
         </div>
 
         {/* Formulario */}

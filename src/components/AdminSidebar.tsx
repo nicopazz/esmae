@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Package, ShoppingCart, ArrowLeft, LayoutDashboard } from "lucide-react"; // Usamos iconos de Lucide para mantener el estilo
+import { X, Package, ShoppingCart, ArrowLeft } from "lucide-react"; 
 
 type Props = {
   isOpen: boolean;

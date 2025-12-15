@@ -1,16 +1,22 @@
 import prisma from "@/lib/prisma";
 import OrderStatus from "@/components/OrderStatus";
+import Image from "next/image"; 
+import { MessageSquare } from "lucide-react"; 
 
 export default async function AdminOrders() {
-  // 1. Obtener la fecha de hoy (inicio del día)
+  // 1. Obtener la fecha de hoy
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
-  // 2. Buscar TODOS los pedidos (Ordenados del más nuevo al más viejo)
+  // 2. Buscar TODOS los pedidos (Incluyendo imágenes)
   const orders = await prisma.order.findMany({
     include: {
       items: {
-        include: { product: true }, // Traemos el nombre del producto de cada ítem
+        include: { 
+          product: {
+            include: { images: true } 
+          }
+        }, 
       },
     },
     orderBy: { createdAt: "desc" },
@@ -27,7 +33,8 @@ export default async function AdminOrders() {
 
   return (
     <div className="space-y-8">
-      {/* SECCIÓN 1: RESUMEN DEL DÍA (Tu pedido especial) */}
+      
+      {/* SECCIÓN 1: RESUMEN DEL DÍA */}
       <div className="bg-black text-white p-6 rounded-lg shadow-lg flex justify-between items-center">
         <div>
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400">
@@ -43,7 +50,7 @@ export default async function AdminOrders() {
             Total Estimado
           </p>
           <p className="text-3xl font-bold text-green-400">
-            ${todaysTotal.toLocaleString()}
+            ${todaysTotal.toLocaleString("es-AR")}
           </p>
         </div>
       </div>
@@ -54,95 +61,121 @@ export default async function AdminOrders() {
           Historial de Pedidos
         </h1>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <table className="w-full text-left text-sm text-gray-600">
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
+          <table className="w-full text-left text-sm text-gray-600 min-w-200">
             <thead className="bg-gray-50 text-gray-900 font-semibold uppercase tracking-wider text-xs border-b border-gray-200">
               <tr>
-                <th className="px-6 py-4">ID</th>
-                <th className="px-6 py-4">Cliente</th>
-                <th className="px-6 py-4">Contacto</th>
-                <th className="px-6 py-4">Productos</th>
+                <th className="px-6 py-4">Cliente / Notas</th> 
+                <th className="px-6 py-4">Productos Comprados</th> 
                 <th className="px-6 py-4">Total</th>
-                <th className="px-6 py-4">Estado</th>
                 <th className="px-6 py-4">Fecha</th>
+                <th className="px-6 py-4 text-center">Estado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {orders.map((order) => (
                 <tr
                   key={order.id}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-gray-50 transition-colors align-top"
                 >
-                  <td className="px-6 py-4 font-mono text-xs">#{order.id}</td>
-
-                  <td className="px-6 py-4">
-                    <p className="font-bold text-gray-900">
+                  
+                  {/* 1. COLUMNA CLIENTE + NOTA */}
+                  <td className="px-6 py-4 max-w-62.5">
+                    <p className="font-bold text-gray-900 text-base">
                       {order.customerName}
                     </p>
-                    <p className="text-xs">{order.email}</p>
-                  </td>
-
-                  <td className="px-6 py-4">
+                    <p className="text-xs text-gray-500 mb-2">{order.email}</p>
+                    
+                    {/* Botón WhatsApp */}
                     <a
                       href={`https://wa.me/${order.phone}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-green-600 hover:underline"
+                      className="inline-flex items-center gap-1 text-green-600 hover:text-green-700 bg-green-50 px-2 py-1 rounded-full text-xs font-bold transition-colors mb-2"
                     >
-                      <span className="font-bold text-green-600">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="w-4 h-4 inline"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z"
-                          />
-                        </svg>
-                      </span>{" "}
+                      <MessageSquare size={12} />
                       {order.phone}
                     </a>
-                  </td>
 
-                  <td className="px-6 py-4">
-                    <ul className="space-y-1">
-                      {order.items.map((item) => (
-                        <li key={item.id} className="text-xs">
-                          <span className="font-bold">{item.quantity}x</span>{" "}
-                          {item.product.name}
-                        </li>
-                      ))}
-                    </ul>
+                    {/* ---> AQUI MOVIMOS LA NOTA <--- */}
                     {order.message && (
                       <div className="mt-2 text-xs bg-yellow-50 p-2 text-yellow-800 rounded border border-yellow-100 italic">
-                        Nota: &quot;{order.message}&quot;
+                        Nota: {order.message}
                       </div>
                     )}
                   </td>
 
-                  <td className="px-6 py-4 font-bold text-gray-900">
-                    ${Number(order.total).toLocaleString()}
-                  </td>
-
+                  {/* 2. COLUMNA PRODUCTOS (LIMPIA: SOLO PRODUCTOS) */}
                   <td className="px-6 py-4">
-                    <OrderStatus id={order.id} initialStatus={order.status} />
+                    <div className="space-y-4">
+                      {order.items.map((item) => (
+                        <div key={item.id} className="flex items-start gap-3">
+                          
+                          {/* FOTO */}
+                          <div className="h-12 w-12 relative bg-gray-100 rounded border border-gray-200 shrink-0 overflow-hidden">
+                             {item.product.images && item.product.images[0] ? (
+                                <Image 
+                                    src={item.product.images[0].url} 
+                                    alt={item.product.name} 
+                                    fill 
+                                    className="object-cover"
+                                />
+                             ) : (
+                                <span className="text-[8px] flex items-center justify-center h-full text-gray-400">Sin foto</span>
+                             )}
+                          </div>
+                          
+                          {/* CANTIDAD Y NOMBRE */}
+                          <div>
+                            <p className="text-gray-900 text-sm font-medium">
+                                {/* Cantidad destacada */}
+                                <span className="inline-flex items-center justify-center bg-black text-white text-[10px] font-bold h-5 w-5 rounded-full mr-2">
+                                  {item.quantity}x
+                                </span>
+                                {item.product.name}
+                            </p>
+                            <p className="text-xs text-gray-500 mt-1 pl-7">
+                                ${Number(item.price).toLocaleString("es-AR")} c/u
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </td>
 
-                  <td className="px-6 py-4 text-xs text-gray-400">
-                    {new Date(order.createdAt).toLocaleDateString()}
+                  {/* 3. TOTAL */}
+                  <td className="px-6 py-4 font-bold text-gray-900 text-base">
+                    ${Number(order.total).toLocaleString("es-AR")}
                   </td>
+
+                  {/* 4. FECHA */}
+                  <td className="px-6 py-4 text-xs text-gray-500">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-medium text-gray-900">
+                            {new Date(order.createdAt).toLocaleDateString()}
+                        </span>
+                        <span>
+                            {new Date(order.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} hs
+                        </span>
+                    </div>
+                    {/* ID pequeño */}
+                    <p className="text-[10px] text-gray-300 mt-1 font-mono">ID: #{order.id}</p>
+                  </td>
+
+                  {/* 5. ESTADO */}
+                  <td className="px-6 py-4 text-center">
+                    <div className="flex justify-center">
+                        <OrderStatus id={order.id} initialStatus={order.status} />
+                    </div>
+                  </td>
+
                 </tr>
               ))}
 
               {orders.length === 0 && (
                 <tr>
                   <td
-                    colSpan={7}
+                    colSpan={5}
                     className="px-6 py-12 text-center text-gray-400"
                   >
                     Aún no hay pedidos registrados.
