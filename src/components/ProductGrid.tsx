@@ -1,17 +1,40 @@
-/* eslint-disable @next/next/no-img-element */
-"use client"; // Componente de Cliente
+"use client"; 
 
-import { useState } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react"; // <--- Importamos Suspense y useEffect
+import { useSearchParams } from "next/navigation"; // <--- Hook para leer la URL
+import Image from "next/image"; 
 import ProductModal from "./ProductModal";
 
-// Recibimos los productos como "prop" desde el servidor
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function ProductGrid({ products }: { products: any[] }) {
+// Creamos un componente interno para usar useSearchParams sin problemas de Hydration
+function ProductGridContent({ products, title }: { products: any[], title?: string }) {
+  const searchParams = useSearchParams(); // Leemos los parámetros
+  const [activeCategory, setActiveCategory] = useState("Todo");
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // 1. Extraer categorías únicas
+  const categories = useMemo(() => {
+    const cats = products.map((p) => p.category.name);
+    return ["Todo", ...Array.from(new Set(cats))];
+  }, [products]);
+
+  // 2. EFECTO: Detectar cambio en la URL para activar el filtro
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get("category");
+    if (categoryFromUrl && categories.includes(categoryFromUrl)) {
+      setActiveCategory(categoryFromUrl);
+    } else {
+       // Si no hay param o es inválido, podrías dejarlo como está o volver a Todo.
+       // setActiveCategory("Todo"); 
+    }
+  }, [searchParams, categories]);
+
+  // 3. Filtrar
+  const filteredProducts = activeCategory === "Todo" 
+    ? products 
+    : products.filter((p) => p.category.name === activeCategory);
+
   const openModal = (product: any) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -19,57 +42,102 @@ export default function ProductGrid({ products }: { products: any[] }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setTimeout(() => setSelectedProduct(null), 300); // Pequeña espera para la animación
+    setTimeout(() => setSelectedProduct(null), 300);
   };
 
   return (
-    <>
-      {/* 1. LA GRILLA DE PRODUCTOS */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12">
-        {products.map((product) => (
+    <div className="space-y-8">
+      {/* HEADER + FILTROS */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+        <div className="w-full md:w-auto">
+          {title && (
+            <>
+               <span className="text-xs font-bold tracking-widest text-gray-400 uppercase block mb-1">
+                 Shop Online
+               </span>
+               <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 leading-tight">
+                 {title}
+               </h2>
+            </>
+          )}
+        </div>
+
+        <div className="flex flex-wrap gap-2 w-full md:w-auto justify-start md:justify-end">
+          {categories.map((cat) => (
+            <button
+              key={cat as string}
+              onClick={() => setActiveCategory(cat as string)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 border ${
+                activeCategory === cat
+                  ? "bg-black text-white border-black shadow-md" 
+                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-400 hover:bg-gray-50"
+              }`}
+            >
+              {cat as string}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* GRILLA */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-12">
+        {filteredProducts.map((product) => (
           <div 
             key={product.id} 
-            className="group cursor-pointer"
-            onClick={() => openModal(product)} // <--- AL HACER CLICK, ABRIMOS MODAL
+            className="group cursor-pointer flex flex-col"
+            onClick={() => openModal(product)} 
           >
-            {/* Imagen */}
-            <div className="relative w-full aspect-3/4 mb-4 overflow-hidden rounded-2xl bg-gray-50">
+            <div className="relative w-full aspect-[3/4] mb-4 overflow-hidden rounded-md bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
               {product.images[0] ? (
-                <img 
+                <Image 
                   src={product.images[0].url} 
                   alt={product.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  fill 
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-300">No Image</div>
+                <div className="w-full h-full flex items-center justify-center text-gray-300 text-xs">Sin Imagen</div>
               )}
-              
-              {/* Botón flotante "Ver Detalle" */}
-              <div className="absolute inset-x-4 bottom-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 ease-out">
-                <button className="w-full bg-white text-black py-3 text-xs font-bold tracking-widest uppercase shadow-lg hover:bg-black hover:text-white transition-colors">
+              <div className="absolute inset-x-0 bottom-0 p-3 md:p-4 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out z-10">
+                <button className="w-full bg-white/90 backdrop-blur-sm text-black py-2.5 md:py-3 text-[10px] md:text-xs font-bold tracking-widest uppercase shadow-sm border border-white/20">
                   Ver Detalle
                 </button>
               </div>
             </div>
-
-            {/* Info */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-sm">
-                <h3 className="font-medium text-gray-900">{product.name}</h3>
-                <span className="font-semibold text-gray-900">${Number(product.price).toLocaleString("es-AR")}</span>
+            <div className="space-y-1 text-center md:text-left px-1">
+              <h3 className="font-serif text-base text-gray-900 leading-tight group-hover:text-gray-600 transition-colors line-clamp-2">
+                  {product.name}
+              </h3>
+              <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-1">
+                <p className="text-[10px] text-gray-400 uppercase tracking-widest font-medium truncate">
+                    {product.category.name}
+                </p>
+                <span className="font-medium text-gray-900 text-sm">
+                    ${Number(product.price).toLocaleString("es-AR")}
+                </span>
               </div>
-              <p className="text-sm text-gray-500 capitalize">{product.category.name}</p>
             </div>
           </div>
         ))}
+        {filteredProducts.length === 0 && (
+            <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-400">
+                <p className="italic mb-4">No hay productos en esta categoría por el momento.</p>
+                <button onClick={() => setActiveCategory("Todo")} className="text-sm font-bold text-black underline underline-offset-4">Ver todos</button>
+            </div>
+        )}
       </div>
 
-      {/* 2. EL MODAL (Invisible hasta que isModalOpen sea true) */}
-      <ProductModal 
-        product={selectedProduct} 
-        isOpen={isModalOpen} 
-        onClose={closeModal} 
-      />
-    </>
+      <ProductModal product={selectedProduct} isOpen={isModalOpen} onClose={closeModal} />
+    </div>
+  );
+}
+
+// Exportamos el componente envuelto en Suspense para evitar errores de build en Next.js
+export default function ProductGrid(props: { products: any[], title?: string }) {
+  return (
+    <Suspense fallback={<div className="py-20 text-center">Cargando catálogo...</div>}>
+      <ProductGridContent {...props} />
+    </Suspense>
   );
 }
