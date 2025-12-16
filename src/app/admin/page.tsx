@@ -35,7 +35,7 @@ export default async function AdminDashboard() {
         <table className="w-full text-left text-sm text-gray-600 min-w-200"> 
           <thead className="bg-gray-50 text-gray-900 font-semibold uppercase tracking-wider text-xs border-b border-gray-200">
             <tr>
-              <th className="px-6 py-4">Imagen</th> {/* Nueva Columna */}
+              <th className="px-6 py-4">Imagen</th> 
               <th className="px-6 py-4">Producto</th>
               <th className="px-6 py-4">Precio</th>
               <th className="px-6 py-4">Stock</th>

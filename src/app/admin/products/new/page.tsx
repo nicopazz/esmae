@@ -124,8 +124,8 @@ export default function NewProductPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
           <select name="categoryId" className="w-full border p-2 rounded-md bg-white">
-            <option value="1">Espejos</option>
-            <option value="2">Bazar</option>
+            <option value="1">Bazar</option>
+            <option value="2">Espejos</option>
             <option value="3">Deco</option>
           </select>
         </div>
