@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Image from "next/image";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -20,50 +21,50 @@ export default function CheckoutPage() {
     message: "",
   });
 
-  const handleDelete = (id) => {
-  toast(
-    (t) => (
-      <div className="flex flex-col gap-4 p-2 min-w-75">
-        {/* Encabezado más visual */}
-        <div className="text-center">
-          <span className="text-2xl mb-2 block">⚠️</span>{" "}
-          <h3 className="font-bold text-lg text-white">
-            ¿Eliminar producto?
-          </h3>
-          <p className="text-sm text-white mt-1">
-            Esta acción no se puede deshacer.
-          </p>
-        </div>
+  const handleDelete = (id: number) => {
+    toast(
+      (t) => (
+        <div className="flex flex-col gap-4 p-2 min-w-75">
+          {/* Encabezado más visual */}
+          <div className="text-center">
+            <span className="text-2xl mb-2 block">⚠️</span>{" "}
+            <h3 className="font-bold text-lg text-white">
+              ¿Eliminar producto?
+            </h3>
+            <p className="text-sm text-white mt-1">
+              Esta acción no se puede deshacer.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-2 gap-3 mt-2">
-          {/* Botón de Cancelar */}
-          <button
-            className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded transition-colors"
-            onClick={() => toast.dismiss(t.id)}
-          >
-            Cancelar
-          </button>
+          <div className="grid grid-cols-2 gap-3 mt-2">
+            {/* Botón de Cancelar */}
+            <button
+              className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded transition-colors"
+              onClick={() => toast.dismiss(t.id)}
+            >
+              Cancelar
+            </button>
 
-          {/* Botón de Confirmar */}
-          <button
-            className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-colors"
-            onClick={() => {
-              removeItem(id);
-              toast.dismiss(t.id);
-              toast.success("Producto eliminado correctamente");
-            }}
-          >
-            Sí, eliminar
-          </button>
+            {/* Botón de Confirmar */}
+            <button
+              className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-colors"
+              onClick={() => {
+                removeItem(id);
+                toast.dismiss(t.id);
+                toast.success("Producto eliminado correctamente");
+              }}
+            >
+              Sí, eliminar
+            </button>
+          </div>
         </div>
-      </div>
-    ),
-    {
-      id: "delete-confirmation", // <--- ESTO SOLUCIONA EL STACKING (Solo permite 1 a la vez)
-      duration: Infinity,        // <--- ESTO EVITA QUE SE CIERRE SOLO (Es mejor para confirmaciones)
-    }
-  );
-};
+      ),
+      {
+        id: "delete-confirmation", // <--- ESTO SOLUCIONA EL STACKING (Solo permite 1 a la vez)
+        duration: Infinity, // <--- ESTO EVITA QUE SE CIERRE SOLO (Es mejor para confirmaciones)
+      }
+    );
+  };
 
   // Manejo del formulario
   const handleInputChange = (
@@ -214,13 +215,19 @@ export default function CheckoutPage() {
                 className="flex gap-4 items-center border-b border-gray-100 pb-6 last:border-0 last:pb-0"
               >
                 {/* Imagen */}
-                <div className="w-20 h-20 bg-gray-100 rounded-sm overflow-hidden shrink-0">
-                  {item.image && (
-                    <img
+                <div className="w-20 h-20 bg-gray-100 rounded-sm overflow-hidden shrink-0 relative">
+                  {item.image ? (
+                    <Image
                       src={item.image}
                       alt={item.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="80px"
                     />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-xs text-gray-400">
+                      Sin foto
+                    </div>
                   )}
                 </div>
 

@@ -11,7 +11,7 @@ export default function Hero() {
         
         {/* Etiqueta Temporada */}
         <span className="inline-block px-3 py-1 text-xs font-semibold tracking-widest uppercase border border-gray-300 rounded-sm text-gray-500">
-          Temporada 2025
+          Temporada 2026
         </span>
 
         {/* Título Principal */}

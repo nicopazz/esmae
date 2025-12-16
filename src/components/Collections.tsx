@@ -38,13 +38,12 @@ export default function Collections() {
         </div>
 
         {/* Grid de Colecciones */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
           {collections.map((item) => (
             <Link 
-              // TRUCO: Enviamos el nombre por URL y hacemos scroll al id="catalogo"
               href={`/?category=${item.name}#catalogo`} 
               key={item.id}
-              className="group cursor-pointer block"
+              className="group cursor-pointer block hover:text-[#C6A892]"
             >
               {/* Imagen */}
               <div className="relative overflow-hidden rounded-lg aspect-4/5 mb-6 bg-gray-100 shadow-sm">
@@ -60,7 +59,7 @@ export default function Collections() {
 
               {/* Textos */}
               <div className="text-center">
-                <h3 className="text-2xl font-serif text-gray-900 mb-2 group-hover:underline decoration-1 underline-offset-4 decoration-gray-400">
+                <h3 className="text-2xl font-serif  mb-2  decoration-1 underline-offset-4 decoration-gray-400">
                   {item.name}
                 </h3>
                 <p className="text-sm text-gray-500 font-light">

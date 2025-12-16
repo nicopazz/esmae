@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 import { useSession, signOut } from "next-auth/react";
 import { toast } from "react-hot-toast";
-import { usePathname } from "next/navigation"; // <--- 1. IMPORTAR ESTO
+import { usePathname } from "next/navigation";
 import {
   ShoppingBag,
   User,
@@ -22,10 +22,8 @@ export default function Navbar() {
   const { data: session } = useSession();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  // 2. OBTENER LA RUTA ACTUAL
   const pathname = usePathname();
 
-  // Bloquear el scroll del cuerpo cuando el menú móvil está abierto
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -84,6 +82,7 @@ export default function Navbar() {
       {/* --- BARRA DE NAVEGACIÓN --- */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+          
           {/* 1. IZQUIERDA */}
           <div className="flex-1 flex justify-start items-center">
             <button
@@ -97,19 +96,19 @@ export default function Navbar() {
                 Inicio
               </Link>
               <Link
-                href="#colecciones"
+                href="/#colecciones"
                 className="hover:text-[#C6A892] transition-colors"
               >
                 Colecciones
               </Link>
               <Link
-                href="#catalogo"
+                href="/#catalogo"
                 className="hover:text-[#C6A892] transition-colors"
               >
                 Catálogo
               </Link>
               <Link
-                href="#footer"
+                href="/#footer"
                 className="hover:text-[#C6A892] transition-colors"
               >
                 Contacto
@@ -119,13 +118,20 @@ export default function Navbar() {
 
           {/* 2. CENTRO: Logo */}
           <div className="flex-0 relative flex justify-center items-center">
-            <Link href="/" className="relative w-30 h-100 block">
+            <Link 
+              href="/" 
+              // AJUSTE FINAL:
+              // Móvil: w-56 h-16 (Ocupa casi todo el alto en móvil)
+              // PC: w-96 h-[72px] (Ocupa el 90% de la altura de la barra, máximo impacto)
+              className="relative w-56 h-16 md:w-96 md:h-18 block hover:opacity-80 transition-opacity"
+            >
               <Image
                 src="/esmaepng.png"
                 alt="Esmae"
                 fill
                 className="object-contain"
                 priority
+                sizes="(max-width: 768px) 224px, 384px"
               />
             </Link>
           </div>
@@ -210,7 +216,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="#colecciones"
+              href="/#colecciones"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-between text-lg font-medium text-gray-800"
             >
@@ -218,7 +224,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="#catalogo"
+              href="/#catalogo"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-between text-lg font-medium text-gray-800"
             >
@@ -226,7 +232,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="#footer"
+              href="/#footer"
               onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-between text-lg font-medium text-gray-800"
             >

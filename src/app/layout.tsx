@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext"; 
 import AuthProvider from "@/components/SessionProvider";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import TopBar from "@/components/TopBar";
 import { Toaster } from "react-hot-toast";
 
 
@@ -46,7 +47,7 @@ export default function RootLayout({
                   },
                 }}
               />
-              
+              <TopBar />
               <Navbar /> 
               {children}
               <WhatsAppButton />

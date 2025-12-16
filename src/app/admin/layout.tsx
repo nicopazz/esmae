@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import AdminSidebar from "@/components/AdminSidebar"; // <--- Importamos el componente que acabamos de crear
+import AdminSidebar from "@/components/AdminSidebar"; 
 import { Menu } from "lucide-react";
 
 export default function AdminLayout({
