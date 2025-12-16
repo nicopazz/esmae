@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-6 py-12 md:px-8 md:py-24 max-w-7xl mx-auto min-h-[85vh]">
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-6 py-2 md:px-8 md:py-24 max-w-7xl mx-auto min-h-[85vh]">
       
       {/* 1. COLUMNA TEXTO */}
       {/* order-2 en móvil (va abajo), order-1 en desktop (va a la izquierda) */}
@@ -17,7 +17,7 @@ export default function Hero() {
         {/* Título Principal */}
         <h1 className="text-4xl md:text-7xl font-serif font-medium text-gray-900 leading-tight">
           Detalles que <br className="hidden md:block" />
-          <span className="italic text-gray-800">inspiran calma.</span>
+          <span className="italic text-[#C6A892]">inspiran calma.</span>
         </h1>
 
         {/* Descripción */}
@@ -31,7 +31,7 @@ export default function Hero() {
           {/* Enlace al Catálogo (Scroll hacia abajo) */}
           <Link 
             href="#catalogo" 
-            className="px-8 py-3 md:py-4 bg-gray-900 text-white font-medium rounded-sm hover:bg-black transition-all shadow-lg hover:shadow-xl"
+            className="px-8 py-3 md:py-4 bg-gray-900 text-white font-medium rounded-full hover:bg-black transition-all shadow-lg hover:shadow-xl"
           >
             Ver Catálogo
           </Link>
@@ -39,7 +39,7 @@ export default function Hero() {
           {/* Enlace a Colecciones (Scroll hacia abajo) */}
           <Link 
             href="#colecciones" 
-            className="px-8 py-3 md:py-4 bg-transparent border border-gray-200 text-gray-900 font-medium rounded-sm hover:border-gray-900 transition-all flex items-center gap-2 group"
+            className="px-8 py-3 md:py-4 bg-transparent border border-gray-200 text-gray-900 font-medium rounded-full hover:border-gray-900 transition-all flex items-center gap-2 group"
           >
             Explorar 
             <span className="hidden md:inline transition-transform group-hover:translate-x-1">Colecciones →</span> 
@@ -53,14 +53,13 @@ export default function Hero() {
       <div className="relative order-1 md:order-2 w-full flex justify-center md:justify-end">
         
         {/* Contenedor de Imagen con forma única */}
-        <div className="relative h-96 md:h-150 w-full max-w-lg rounded-t-[10rem] rounded-b-4xl md:rounded-b-[10rem] overflow-hidden shadow-2xl bg-gray-100">
-             {/* Usamos el componente Image para carga rápida */}
+        <div className="relative h-70 md:h-150 w-full max-w-lg rounded-t-[10rem] rounded-b-4xl md:rounded-b-[10rem] overflow-hidden shadow-2xl bg-gray-100">
              <Image 
                src="/heroimg.jpg" 
                alt="Espejo Esmae Ambiente" 
                fill
                className="object-cover"
-               priority // Carga prioritaria para que no parpadee
+               priority 
              />
         </div>
 

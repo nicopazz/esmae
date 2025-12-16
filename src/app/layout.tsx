@@ -12,8 +12,11 @@ const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-serif' });
 
 export const metadata: Metadata = {
-  title: "Esmae | Home Decor",
-  description: "Diseño y decoración minimalista",
+  title: "Esmae",
+  description: "Diseño y decoración",
+  icons: {
+    icon: '/logo.jpg', 
+  },
 };
 
 export default function RootLayout({

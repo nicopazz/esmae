@@ -25,12 +25,11 @@ export default async function Home() {
     <div className="min-h-screen bg-white">
       <Hero />
 
-      <div id="colecciones" className="pt-10">
+      <div id="colecciones" className="px-8 max-w-7xl mx-auto border-t border-gray-100">
         <Collections /> 
       </div>
 
-      {/* SECCIÓN PRODUCTOS: Aquí pasamos el título, y el componente renderiza los filtros */}
-      <section id="catalogo" className="px-8 py-20 max-w-7xl mx-auto border-t border-gray-100">
+      <section id="catalogo" className="px-8 py-10 max-w-7xl mx-auto border-t border-gray-100">
         <ProductGrid products={products} title="Nuevos Ingresos" />
       </section>
 

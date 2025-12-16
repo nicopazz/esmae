@@ -214,7 +214,7 @@ export default function CheckoutPage() {
                 className="flex gap-4 items-center border-b border-gray-100 pb-6 last:border-0 last:pb-0"
               >
                 {/* Imagen */}
-                <div className="w-20 h-20 bg-gray-100 rounded-sm overflow-hidden flex-shrink-0">
+                <div className="w-20 h-20 bg-gray-100 rounded-sm overflow-hidden shrink-0">
                   {item.image && (
                     <img
                       src={item.image}
