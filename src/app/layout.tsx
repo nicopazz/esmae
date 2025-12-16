@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/context/CartContext"; 
 import AuthProvider from "@/components/SessionProvider";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { Toaster } from "react-hot-toast";
 
 
@@ -45,6 +46,7 @@ export default function RootLayout({
               
               <Navbar /> 
               {children}
+              <WhatsAppButton />
             </CartProvider>
         </AuthProvider>
       </body>

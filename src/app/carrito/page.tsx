@@ -23,7 +23,7 @@ export default function CheckoutPage() {
   const handleDelete = (id) => {
   toast(
     (t) => (
-      <div className="flex flex-col gap-4 p-2 min-w-[300px]">
+      <div className="flex flex-col gap-4 p-2 min-w-75">
         {/* Encabezado más visual */}
         <div className="text-center">
           <span className="text-2xl mb-2 block">⚠️</span>{" "}

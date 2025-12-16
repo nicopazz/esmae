@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import Image from "next/image"; // Usamos Image para optimizar
 
@@ -6,7 +5,6 @@ const collections = [
   {
     id: 1,
     name: "Espejos",
-    // Usamos el nombre exacto para filtrar abajo
     image: "https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=80&w=600",
     description: "Amplitud y diseño para tus paredes."
   },
@@ -49,7 +47,7 @@ export default function Collections() {
               className="group cursor-pointer block"
             >
               {/* Imagen */}
-              <div className="relative overflow-hidden rounded-lg aspect-[4/5] mb-6 bg-gray-100 shadow-sm">
+              <div className="relative overflow-hidden rounded-lg aspect-4/5 mb-6 bg-gray-100 shadow-sm">
                 <Image 
                   src={item.image} 
                   alt={item.name}

@@ -6,11 +6,13 @@ import Image from "next/image";
 import ProductModal from "./ProductModal";
 
 // Creamos un componente interno para usar useSearchParams sin problemas de Hydration
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ProductGridContent({ products, title }: { products: any[], title?: string }) {
   const searchParams = useSearchParams(); // Leemos los parámetros
   const [activeCategory, setActiveCategory] = useState("Todo");
   
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [selectedProduct, setSelectedProduct] = useState<any>(null);
 
   // 1. Extraer categorías únicas
@@ -23,10 +25,10 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
     if (categoryFromUrl && categories.includes(categoryFromUrl)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveCategory(categoryFromUrl);
     } else {
-       // Si no hay param o es inválido, podrías dejarlo como está o volver a Todo.
-       // setActiveCategory("Todo"); 
+       setActiveCategory("Todo"); 
     }
   }, [searchParams, categories]);
 
@@ -35,6 +37,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
     ? products 
     : products.filter((p) => p.category.name === activeCategory);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const openModal = (product: any) => {
     setSelectedProduct(product);
     setIsModalOpen(true);
@@ -87,7 +90,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
             className="group cursor-pointer flex flex-col"
             onClick={() => openModal(product)} 
           >
-            <div className="relative w-full aspect-[3/4] mb-4 overflow-hidden rounded-md bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
+            <div className="relative w-full aspect-3/4 mb-4 overflow-hidden rounded-md bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300">
               {product.images[0] ? (
                 <Image 
                   src={product.images[0].url} 
@@ -134,6 +137,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
 }
 
 // Exportamos el componente envuelto en Suspense para evitar errores de build en Next.js
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProductGrid(props: { products: any[], title?: string }) {
   return (
     <Suspense fallback={<div className="py-20 text-center">Cargando catálogo...</div>}>
