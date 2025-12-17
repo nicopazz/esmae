@@ -1,6 +1,9 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 type CartItem = {
   id: number;
@@ -8,14 +11,14 @@ type CartItem = {
   price: number;
   image: string;
   quantity: number;
-  stock: number; // <--- Nuevo: Guardamos el stock máximo real
+  stock: number;
 };
 
 type CartContextType = {
   items: CartItem[];
   addItem: (product: any) => void;
-  removeItem: (id: number) => void; // Borrar todo el item
-  decreaseItem: (id: number) => void; // Restar 1 unidad
+  removeItem: (id: number) => void;
+  decreaseItem: (id: number) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -25,69 +28,88 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
+  
+  // 1. Extraemos 'status' también para saber cuándo terminó de cargar la sesión
+  const { data: session, status } = useSession(); 
+  
+  const router = useRouter();
 
-  // Cargar desde localStorage
+  // Cargar desde localStorage al iniciar
   useEffect(() => {
     const savedCart = localStorage.getItem("esmae_cart");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (savedCart) setItems(JSON.parse(savedCart));
   }, []);
 
-  // Guardar en localStorage
+  // Guardar en localStorage cada vez que cambia 'items'
   useEffect(() => {
     localStorage.setItem("esmae_cart", JSON.stringify(items));
   }, [items]);
 
-  // 1. AGREGAR (Con lógica de Stock)
+  // --- 4. NUEVO: LIMPIAR AL CERRAR SESIÓN ---
+  useEffect(() => {
+    // Si el estado confirma que NO está autenticado (se deslogueó)
+    if (status === "unauthenticated") {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setItems([]); // Vaciamos el estado
+      localStorage.removeItem("esmae_cart"); // Borramos la memoria
+    }
+  }, [status]); // Se ejecuta cuando cambia el status de la sesión
+
+  
+  // Lógica de AGREGAR
   const addItem = (product: any) => {
-    setItems((currentItems) => {
-      const existingItem = currentItems.find((item) => item.id === Number(product.id));
-      const maxStock = product.stock || 99; // Si no hay dato de stock, asumimos 99
+    if (!session) {
+      toast.error("Debes iniciar sesión para comprar 🔒", {
+        style: { background: "#000", color: "#fff" },
+      });
+      router.push("/auth/login");
+      return;
+    }
 
-      if (existingItem) {
-        // LÓGICA: Si ya llegamos al stock máximo, no sumamos más
-        if (existingItem.quantity >= maxStock) {
-          return currentItems; // No hacemos cambios
-        }
+    const existingItem = items.find((item) => item.id === Number(product.id));
+    const maxStock = product.stock || 99;
 
-        return currentItems.map((item) =>
+    if (existingItem) {
+      if (existingItem.quantity >= maxStock) {
+        toast.error("Stock máximo alcanzado");
+        return;
+      }
+      setItems((currentItems) =>
+        currentItems.map((item) =>
           item.id === Number(product.id)
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        );
-      }
-
-      // Si es nuevo
-      return [...currentItems, {
-        id: Number(product.id), // Forzamos que sea número
-        name: product.name,
-        price: Number(product.price),
-        image: product.images?.[0]?.url || "",
-        quantity: 1,
-        stock: maxStock 
-      }];
-    });
+        )
+      );
+    } else {
+      setItems((currentItems) => [
+        ...currentItems,
+        {
+          id: Number(product.id),
+          name: product.name,
+          price: Number(product.price),
+          image: product.images?.[0]?.url || "",
+          quantity: 1,
+          stock: maxStock,
+        },
+      ]);
+    }
   };
 
-  // 2. RESTAR UNA UNIDAD
   const decreaseItem = (id: number) => {
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.id === id);
-      
-      // Si solo queda 1, lo borramos del todo
       if (existingItem?.quantity === 1) {
         return currentItems.filter((item) => item.id !== id);
       }
-
-      // Si hay más de 1, restamos
       return currentItems.map((item) => 
         item.id === id ? { ...item, quantity: item.quantity - 1 } : item
       );
     });
   };
 
-  // 3. ELIMINAR EL PRODUCTO COMPLETO (Corrigiendo el bug de "borra todo")
   const removeItem = (id: number) => {
-    // Usamos Number(id) para asegurar que comparamos numero con numero
     setItems((currentItems) => currentItems.filter((item) => item.id !== Number(id)));
   };
 

@@ -60,8 +60,8 @@ export default function CheckoutPage() {
         </div>
       ),
       {
-        id: "delete-confirmation", // <--- ESTO SOLUCIONA EL STACKING (Solo permite 1 a la vez)
-        duration: Infinity, // <--- ESTO EVITA QUE SE CIERRE SOLO (Es mejor para confirmaciones)
+        id: "delete-confirmation", 
+        duration: Infinity, 
       }
     );
   };
@@ -115,7 +115,7 @@ export default function CheckoutPage() {
           Parece que no has agregado productos todavía.
         </p>
         <Link
-          href="/"
+          href="/#catalogo"
           className="px-8 py-3 bg-black text-white uppercase text-xs font-bold tracking-widest hover:bg-gray-800"
         >
           Volver al Catálogo
@@ -205,10 +205,11 @@ export default function CheckoutPage() {
 
         {/* COLUMNA 2: RESUMEN DEL PEDIDO */}
         <div>
-          <h2 className="text-2xl font-serif text-gray-900 mb-6">
+          
+          <div className="bg-white p-8 rounded-sm shadow-sm space-y-6">
+            <h2 className="text-2xl font-serif text-gray-900 mb-6">
             Resumen del Pedido
           </h2>
-          <div className="bg-white p-8 rounded-sm shadow-sm space-y-6">
             {items.map((item) => (
               <div
                 key={item.id}

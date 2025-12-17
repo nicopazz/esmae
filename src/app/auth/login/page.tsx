@@ -1,83 +1,79 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import Link from "next/link"; // <--- Importamos Link
 
 export default function LoginPage() {
   const router = useRouter();
-  const [error] = useState("");
   const [loading, setLoading] = useState(false);
-  
   const [form, setForm] = useState({
-    username: "",
-    password: ""
+    email: "",
+    password: "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-   
 
-    // Intentamos iniciar sesión con las credenciales
-    const res = await signIn("credentials", {
-      username: form.username,
-      password: form.password,
-      redirect: false, // No redirigir automático, lo manejamos nosotros
-    });
+    try {
+      // Usamos NextAuth para iniciar sesión
+      const res = await signIn("credentials", {
+        username: form.email, // En nuestro provider configuramos 'username' para recibir el email
+        password: form.password,
+        redirect: false, // Importante: manejamos la redirección manualmente
+      });
 
-    if (res?.error) {
-      toast.error("Usuario o contraseña incorrectos ❌");
+      if (res?.error) {
+        toast.error("Credenciales incorrectas");
+      } else {
+        toast.success("¡Bienvenido/a de nuevo! 👋");
+        router.push("/"); // Redirigir al inicio o donde prefieras
+        router.refresh(); // Actualizar sesión en el cliente
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al iniciar sesión");
+    } finally {
       setLoading(false);
-    } else {
-      toast.success("¡Bienvenido de nuevo! 👋");
-      // Si todo sale bien, vamos al admin
-      router.push("/admin");
-      router.refresh();
     }
   };
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md border border-gray-100">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 bg-gray-50/50">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-sm border border-gray-100">
         
         {/* Encabezado */}
         <div className="text-center mb-8">
-          <h1 className="text-gray-500 mt-2 tracking-widest uppercase text-xs font-bold">Iniciar Sesión</h1>
-          
+          <h1 className="text-gray-900 font-serif text-2xl">Iniciar Sesión</h1>
+          <p className="text-gray-400 text-xs uppercase tracking-widest mt-2">Bienvenido a Esmae</p>
         </div>
 
-        {/* Formulario */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          
-          {error && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm text-center border border-red-100">
-              {error}
-            </div>
-          )}
-
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">
+              Email
+            </label>
             <input 
-              type="text" 
+              type="email" 
               required
-              className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-black transition-colors"
-              placeholder="Ingresa tu usuario"
-              value={form.username}
-              onChange={(e) => setForm({...form, username: e.target.value})}
+              className="w-full border border-gray-200 p-3 rounded-sm focus:outline-none focus:border-black transition-colors"
+              placeholder="tu@email.com"
+              onChange={(e) => setForm({...form, email: e.target.value})}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+            <label className="block text-xs font-bold uppercase text-gray-500 mb-1">
+              Contraseña
+            </label>
             <input 
               type="password" 
               required
-              className="w-full border border-gray-300 p-3 rounded-sm focus:outline-none focus:border-black transition-colors"
-              placeholder="••••••••"
-              value={form.password}
+              className="w-full border border-gray-200 p-3 rounded-sm focus:outline-none focus:border-black transition-colors"
+              placeholder="••••••"
               onChange={(e) => setForm({...form, password: e.target.value})}
             />
           </div>
@@ -85,15 +81,17 @@ export default function LoginPage() {
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full bg-black text-white py-3 uppercase text-xs font-bold tracking-widest hover:bg-gray-800 transition-colors disabled:opacity-50"
+            className="w-full bg-black text-white py-4 uppercase text-xs font-bold tracking-widest hover:bg-gray-800 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
-            {loading ? "Entrando..." : "Iniciar Sesión"}
+            {loading ? "Entrando..." : "Ingresar"}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-            <Link href="/" className="text-xs text-gray-400 hover:text-black transition-colors">
-                ← Volver a la tienda
+        {/* --- AQUÍ AGREGAMOS EL LINK AL REGISTRO --- */}
+        <div className="mt-6 text-center text-sm border-t border-gray-100 pt-6">
+            <span className="text-gray-500">¿No tienes cuenta? </span>
+            <Link href="/auth/register" className="font-bold text-black hover:underline ml-1">
+                Regístrate aquí
             </Link>
         </div>
 

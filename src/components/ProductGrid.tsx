@@ -49,9 +49,9 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
   };
 
   return (
-    <div className="space-y-8">
+    <div className="mt-15 space-y-8">
       {/* HEADER + FILTROS */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-6">
         <div className="w-full md:w-auto">
           {title && (
             <>

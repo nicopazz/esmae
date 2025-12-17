@@ -77,6 +77,10 @@ export default function Navbar() {
     );
   };
 
+  // Helper para verificar si es admin (evita errores de TS)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const isAdmin = session?.user && (session.user as any).role === "ADMIN";
+
   return (
     <>
       {/* --- BARRA DE NAVEGACIÓN --- */}
@@ -120,9 +124,6 @@ export default function Navbar() {
           <div className="flex-0 relative flex justify-center items-center">
             <Link 
               href="/" 
-              // AJUSTE FINAL:
-              // Móvil: w-56 h-16 (Ocupa casi todo el alto en móvil)
-              // PC: w-96 h-[72px] (Ocupa el 90% de la altura de la barra, máximo impacto)
               className="relative w-56 h-16 md:w-96 md:h-18 block hover:opacity-80 transition-opacity"
             >
               <Image
@@ -140,14 +141,18 @@ export default function Navbar() {
           <div className="flex-1 flex justify-end items-center gap-4 sm:gap-6">
             {session ? (
               <div className="hidden md:flex items-center gap-3">
-                <Link
-                  href="/admin"
-                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-black text-white px-3 py-2 rounded-full hover:text-[#C6A892] transition-colors"
-                  title="Ir al Panel Admin"
-                >
-                  <LayoutDashboard size={16} />
-                  <span>Admin</span>
-                </Link>
+                {/* LÓGICA DE ADMIN (SOLO VISIBLE SI EL ROL ES ADMIN) */}
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-black text-white px-3 py-2 rounded-full hover:text-[#C6A892] transition-colors"
+                    title="Ir al Panel Admin"
+                  >
+                    <LayoutDashboard size={16} />
+                    <span>Admin</span>
+                  </Link>
+                )}
+                
                 <button
                   onClick={handleLogout}
                   className="text-gray-400 hover:text-red-600 transition-colors p-1"
@@ -243,14 +248,18 @@ export default function Navbar() {
 
             {session ? (
               <div className="space-y-4">
-                <Link
-                  href="/admin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-black bg-gray-100 p-3 rounded-md"
-                >
-                  <LayoutDashboard size={18} />
-                  Panel Admin
-                </Link>
+                {/* LÓGICA DE ADMIN MÓVIL (SOLO VISIBLE SI EL ROL ES ADMIN) */}
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-black bg-gray-100 p-3 rounded-md"
+                  >
+                    <LayoutDashboard size={18} />
+                    Panel Admin
+                  </Link>
+                )}
+                
                 <button
                   onClick={() => {
                     setIsMobileMenuOpen(false);

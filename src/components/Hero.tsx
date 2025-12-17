@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Hero() {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-6 py-2 md:px-8 md:py-24 max-w-7xl mx-auto min-h-[85vh]">
+    <section className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center px-6 py-2 md:px-8 md:py-24 max-w-7xl mx-auto min-h-[85vh] ">
       
       {/* 1. COLUMNA TEXTO */}
       {/* order-2 en móvil (va abajo), order-1 en desktop (va a la izquierda) */}

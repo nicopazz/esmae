@@ -25,7 +25,7 @@ const collections = [
 export default function Collections() {
   return (
     <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-8">
+      <div className="max-w-7xl mx-auto px-8 mt-15">
         
         {/* Título */}
         <div className="text-center mb-16 space-y-2">
