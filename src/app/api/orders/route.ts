@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { Resend } from "resend";
+import { getServerSession } from "next-auth"; // <--- Importante
+import { authOptions } from "@/lib/auth";     // <--- Importante
 
 interface OrderItem {
   id: string;
@@ -16,7 +18,18 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { customer, items, total } = body;
 
-    // 1. Guardar en Base de Datos (Esto ya lo hacíamos)
+    // 1. DETECTAR USUARIO (Usando la nueva config)
+    const session = await getServerSession(authOptions);
+    let userId = null;
+
+    if (session?.user?.email) {
+      const user = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+      if (user) userId = user.id;
+    }
+
+    // 2. CREAR PEDIDO
     const newOrder = await prisma.order.create({
       data: {
         customerName: customer.name,
@@ -25,9 +38,10 @@ export async function POST(request: Request) {
         message: customer.message,
         total: total,
         status: "pendiente",
+        userId: userId, // <--- Vinculación clave
         items: {
           create: items.map((item: OrderItem) => ({
-            productId: item.id,
+            productId: Number(item.id),
             quantity: item.quantity,
             price: item.price
           }))
@@ -35,41 +49,25 @@ export async function POST(request: Request) {
       }
     });
 
-    // 2. Enviar Email al Dueño (¡NUEVO!)
+    // 3. ENVIAR EMAIL (Tu lógica original)
     try {
       await resend.emails.send({
-        from: 'Esmae Web <onboarding@resend.dev>', // Usamos el mail de prueba de Resend
+        from: 'Esmae Web <onboarding@resend.dev>',
         to: ['nicopazmalizia@gmail.com'], 
         subject: `¡Nuevo Pedido #${newOrder.id} de ${customer.name}!`,
         html: `
-          <h1>¡Tienes una nueva venta! 🥳</h1>
-          <p><strong>Cliente:</strong> ${customer.name}</p>
-          <p><strong>WhatsApp:</strong> ${customer.phone}</p>
-          <p><strong>Email:</strong> ${customer.email}</p>
-          <hr />
-          <h3>Detalle del pedido:</h3>
-          <ul>
-            ${items.map((item: OrderItem) => `
-              <li>
-                <strong>${item.quantity}x</strong> ${item.name} - $${item.price}
-              </li>
-            `).join('')}
-          </ul>
-          <h3>Total: $${Number(total).toLocaleString()}</h3>
-          <br />
-          <a href="http://localhost:3000/admin/orders" style="background-color: black; color: white; padding: 10px 20px; text-decoration: none;">Ver en el Admin</a>
+          <h1>Nueva venta #${newOrder.id}</h1>
+          <p>Cliente: ${customer.name} (${customer.email})</p>
+          <p>Total: $${Number(total).toLocaleString()}</p>
+          <a href="http://localhost:3000/admin/orders">Ver en Admin</a>
         `
       });
-      console.log("Email enviado con éxito");
-    } catch (emailError) {
-      console.error("Error enviando email (pero la orden se guardó):", emailError);
-      // No bloqueamos el proceso si falla el email, lo importante es que se guardó la venta
-    }
+    } catch (e) { console.error("Error email:", e); }
 
     return NextResponse.json({ success: true, orderId: newOrder.id });
     
   } catch (error) {
-    console.error("Error creando orden:", error);
-    return NextResponse.json({ success: false, error: "Error al procesar el pedido" }, { status: 500 });
+    console.error(error);
+    return NextResponse.json({ success: false }, { status: 500 });
   }
 }

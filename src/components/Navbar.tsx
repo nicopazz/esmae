@@ -15,6 +15,7 @@ import {
   X,
   ChevronRight,
   LogOut,
+  Package, // <--- Importamos Package para el icono de pedidos
 } from "lucide-react";
 
 export default function Navbar() {
@@ -77,9 +78,8 @@ export default function Navbar() {
     );
   };
 
-  // Helper para verificar si es admin (evita errores de TS)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const isAdmin = session?.user && (session.user as any).role === "ADMIN";
+  // Helper para verificar si es admin (ya no necesita 'as any' gracias a los tipos)
+  const isAdmin = session?.user?.role === "ADMIN";
 
   return (
     <>
@@ -152,6 +152,17 @@ export default function Navbar() {
                     <span>Admin</span>
                   </Link>
                 )}
+
+                {/* --- BOTÓN MIS PEDIDOS (NUEVO) --- */}
+                <Link
+                  href="/perfil"
+                  className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-gray-100 text-gray-900 px-3 py-2 rounded-full hover:bg-gray-200 transition-colors"
+                  title="Mis Pedidos"
+                >
+                  <Package size={16} />
+                  <span className="hidden lg:inline">Mis Pedidos</span>
+                </Link>
+                {/* -------------------------------- */}
                 
                 <button
                   onClick={handleLogout}
@@ -259,6 +270,17 @@ export default function Navbar() {
                     Panel Admin
                   </Link>
                 )}
+
+                {/* --- BOTÓN MIS PEDIDOS MÓVIL (NUEVO) --- */}
+                <Link
+                  href="/perfil"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="flex items-center gap-3 text-sm font-bold uppercase tracking-wider text-black bg-gray-100 p-3 rounded-md"
+                >
+                  <Package size={18} />
+                  Mis Pedidos
+                </Link>
+                {/* --------------------------------------- */}
                 
                 <button
                   onClick={() => {
