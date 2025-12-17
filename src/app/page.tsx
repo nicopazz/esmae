@@ -30,7 +30,7 @@ export default async function Home() {
       </div>
 
       <section id="catalogo" className="px-8 py-10 max-w-7xl mx-auto border-t border-gray-100">
-        <ProductGrid products={products} title="Nuevos Ingresos" />
+        <ProductGrid products={products} title="Catálogo" />
       </section>
 
       <StorySection />

@@ -13,7 +13,7 @@ export default function TopBar() {
     <div className="bg-[#121212] text-white relative h-10 border-b border-white/5 overflow-hidden">
       
       {/* Patrón de fondo (Estilo StorySection) */}
-      <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-[length:16px_16px] pointer-events-none z-0" />
+      <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[16px_16px] pointer-events-none z-0" />
 
       {/* Contenedor Centrado */}
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-center relative z-10">

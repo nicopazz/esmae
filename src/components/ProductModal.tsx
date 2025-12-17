@@ -5,12 +5,14 @@ import { useCart } from "@/context/CartContext";
 import { toast } from "react-hot-toast";
 
 interface ModalProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
   isOpen: boolean;
   onClose: () => void;
 }
 
 export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showSuccess, setShowSuccess] = useState(false); // Estado para el mensaje de "¡Agregado!"
   const { addItem, items } = useCart(); // Traemos 'items' para chequear stock actual en carrito
 

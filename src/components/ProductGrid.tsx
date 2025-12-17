@@ -58,7 +58,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
                <span className="text-xs font-bold tracking-widest text-gray-400 uppercase block mb-1">
                  Shop Online
                </span>
-               <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 leading-tight">
+               <h2 className="text-3xl md:text-4xl font-serif  text-gray-900 leading-tight">
                  {title}
                </h2>
             </>

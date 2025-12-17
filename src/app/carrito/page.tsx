@@ -194,7 +194,7 @@ export default function CheckoutPage() {
               disabled={isSubmitting}
               className="w-full bg-black text-white py-4 uppercase text-xs font-bold tracking-widest hover:bg-gray-800 transition-all disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Enviando..." : "Solicitar Presupuesto"}
+              {isSubmitting ? "Enviando..." : "Realizar pedido"}
             </button>
             <p className="text-xs text-gray-400 text-center mt-4">
               Al enviar, nos llegará tu pedido y te contactaremos para coordinar

@@ -16,7 +16,7 @@ export default function Footer() {
           <div className="hidden md:flex flex-col items-center md:items-start justify-start"> 
             <Link 
               href="/" 
-              className="relative w-full max-w-md h-48 block hover:opacity-80 transition-opacity -mt-6"
+              className="relative w-full max-w-md h-35 block hover:opacity-80 transition-opacity "
             >
                <Image
                 src="/esmaepng.png" 
