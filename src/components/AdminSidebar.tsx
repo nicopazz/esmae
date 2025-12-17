@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { X, Package, ShoppingCart, ArrowLeft } from "lucide-react"; 
+import { X, Package, ShoppingCart, ArrowLeft, Users } from "lucide-react"; 
+
 
 type Props = {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export default function AdminSidebar({ isOpen, onClose }: Props) {
   const links = [ 
     { name: "Productos", href: "/admin", icon: Package, exact: false },
     { name: "Pedidos", href: "/admin/orders", icon: ShoppingCart, exact: false },
+    { name: "Usuarios", href: "/admin/users", icon: Users, exact: false },
   ];
 
   return (
