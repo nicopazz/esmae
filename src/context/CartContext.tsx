@@ -16,7 +16,7 @@ type CartItem = {
 
 type CartContextType = {
   items: CartItem[];
-  addItem: (product: any) => void;
+  addItem: (product: any, count?: number) => void;
   removeItem: (id: number) => void;
   decreaseItem: (id: number) => void;
   clearCart: () => void;
@@ -28,37 +28,33 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
-  
-  // 1. Extraemos 'status' también para saber cuándo terminó de cargar la sesión
-  const { data: session, status } = useSession(); 
-  
+  const { data: session, status } = useSession();
   const router = useRouter();
 
-  // Cargar desde localStorage al iniciar
+  // Cargar desde localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem("esmae_cart");
     // eslint-disable-next-line react-hooks/set-state-in-effect
     if (savedCart) setItems(JSON.parse(savedCart));
   }, []);
 
-  // Guardar en localStorage cada vez que cambia 'items'
+  // Guardar en localStorage
   useEffect(() => {
     localStorage.setItem("esmae_cart", JSON.stringify(items));
   }, [items]);
 
-  // --- 4. NUEVO: LIMPIAR AL CERRAR SESIÓN ---
+  // Limpiar al cerrar sesión
   useEffect(() => {
-    // Si el estado confirma que NO está autenticado (se deslogueó)
     if (status === "unauthenticated") {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setItems([]); // Vaciamos el estado
-      localStorage.removeItem("esmae_cart"); // Borramos la memoria
+      setItems([]);
+      localStorage.removeItem("esmae_cart");
     }
-  }, [status]); // Se ejecuta cuando cambia el status de la sesión
+  }, [status]);
 
-  
-  // Lógica de AGREGAR
-  const addItem = (product: any) => {
+  // 1. AGREGAR (Ahora acepta cantidad)
+  const addItem = (product: any, count: number = 1) => {
+    // A. Validación de Sesión
     if (!session) {
       toast.error("Debes iniciar sesión para comprar 🔒", {
         style: { background: "#000", color: "#fff" },
@@ -67,22 +63,33 @@ export function CartProvider({ children }: { children: ReactNode }) {
       return;
     }
 
+    // B. Lógica de Producto
     const existingItem = items.find((item) => item.id === Number(product.id));
     const maxStock = product.stock || 99;
 
     if (existingItem) {
-      if (existingItem.quantity >= maxStock) {
-        toast.error("Stock máximo alcanzado");
+      // Validamos si la suma total superaría el stock
+      if (existingItem.quantity + count > maxStock) {
+        toast.error(`Solo quedan ${maxStock} unidades disponibles`);
         return;
       }
+
+      toast.success(`Se agregaron ${count} unidades`);
       setItems((currentItems) =>
         currentItems.map((item) =>
           item.id === Number(product.id)
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + count } // Sumamos la cantidad elegida
             : item
         )
       );
     } else {
+      // Validamos si lo que quiere agregar supera el stock (caso raro pero posible)
+      if (count > maxStock) {
+         toast.error(`Solo quedan ${maxStock} unidades disponibles`);
+         return;
+      }
+
+      toast.success("Producto agregado al carrito 🛒");
       setItems((currentItems) => [
         ...currentItems,
         {
@@ -90,7 +97,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           name: product.name,
           price: Number(product.price),
           image: product.images?.[0]?.url || "",
-          quantity: 1,
+          quantity: count, // Usamos la cantidad elegida
           stock: maxStock,
         },
       ]);
