@@ -16,6 +16,7 @@ type CartItem = {
 
 type CartContextType = {
   items: CartItem[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addItem: (product: any, count?: number) => void;
   removeItem: (id: number) => void;
   decreaseItem: (id: number) => void;
@@ -53,6 +54,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [status]);
 
   // 1. AGREGAR (Ahora acepta cantidad)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const addItem = (product: any, count: number = 1) => {
     // A. Validación de Sesión
     if (!session) {

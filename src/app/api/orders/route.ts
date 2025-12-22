@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { customer, items, total } = body;
 
-    // 1. Detectar usuario (si existe)
+    // 1. Detectar usuario
     const session = await getServerSession(authOptions);
     let userId = null;
 
@@ -29,33 +29,28 @@ export async function POST(request: Request) {
       if (user) userId = user.id;
     }
 
-    // --- TRANSACCIÓN DE STOCK Y PEDIDO ---
-    // Usamos $transaction para que todas las operaciones se hagan juntas o ninguna se haga
+    // 2. TRANSACCIÓN (Stock + Pedido)
     const newOrder = await prisma.$transaction(async (tx) => {
-      
-      // PASO A: Verificar y descontar stock de cada producto
+      // A. Verificar y descontar stock
       for (const item of items) {
         const product = await tx.product.findUnique({
           where: { id: Number(item.id) }
         });
 
-        if (!product) {
-          throw new Error(`El producto "${item.name}" ya no existe.`);
-        }
-
+        if (!product) throw new Error(`El producto "${item.name}" ya no existe.`);
+        
         if (product.stock < item.quantity) {
           throw new Error(`Stock insuficiente para "${item.name}". Solo quedan ${product.stock}.`);
         }
 
-        // Descontamos el stock
         await tx.product.update({
           where: { id: Number(item.id) },
           data: { stock: { decrement: item.quantity } }
         });
       }
 
-      // PASO B: Crear el pedido (Solo si lo anterior pasó sin errores)
-      const order = await tx.order.create({
+      // B. Crear pedido
+      return await tx.order.create({
         data: {
           customerName: customer.name,
           email: customer.email,
@@ -73,48 +68,79 @@ export async function POST(request: Request) {
           }
         }
       });
-
-      return order;
     });
-    // -------------------------------------
 
-    // 3. Enviar Email (Fuera de la transacción para no bloquear la venta si falla el email)
+    // 3. ENVÍO DE EMAILS (Doble envío)
     try {
+      // A. Email para el ADMIN (Tú)
       await resend.emails.send({
         from: 'Esmae Web <onboarding@resend.dev>',
         to: ['nicopazmalizia@gmail.com'], 
-        subject: `¡Nuevo Pedido #${newOrder.id} de ${customer.name}!`,
+        subject: `¡Nueva Venta #${newOrder.id}! 🤑`,
         html: `
-          <h1>¡Tienes una nueva venta! 🥳</h1>
-          <p><strong>Cliente:</strong> ${customer.name}</p>
-          <p><strong>WhatsApp:</strong> ${customer.phone}</p>
-          <p><strong>Email:</strong> ${customer.email}</p>
-          <hr />
-          <h3>Detalle del pedido:</h3>
-          <ul>
-            ${items.map((item: OrderItem) => `
-              <li>
-                <strong>${item.quantity}x</strong> ${item.name} - $${item.price}
-              </li>
-            `).join('')}
-          </ul>
-          <h3>Total: $${Number(total).toLocaleString()}</h3>
-          <br />
-          <a href="http://localhost:3000/admin/orders" style="background-color: black; color: white; padding: 10px 20px; text-decoration: none;">Ver en el Admin</a>
+          <div style="font-family: sans-serif; padding: 20px;">
+            <h1>¡Nueva venta por $${Number(total).toLocaleString()}!</h1>
+            <p><strong>Cliente:</strong> ${customer.name}</p>
+            <p><strong>WhatsApp:</strong> <a href="https://wa.me/${customer.phone}">${customer.phone}</a></p>
+            <hr />
+            <a href="http://localhost:3000/admin/orders" style="background: black; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+              Gestionar Pedido
+            </a>
+          </div>
         `
       });
+
+      // B. Email para el CLIENTE (Confirmación)
+      await resend.emails.send({
+        from: 'Esmae Web <onboarding@resend.dev>',
+        to: [customer.email], // Enviamos al mail del formulario
+        subject: `Confirmación de Pedido #${newOrder.id} - Esmae`,
+        html: `
+          <div style="font-family: 'Times New Roman', serif; max-width: 600px; margin: 0 auto; color: #000;">
+            <h1 style="text-align: center; font-size: 24px; margin-bottom: 10px;">Esmae</h1>
+            <hr style="border: 0; border-top: 1px solid #eee;" />
+            
+            <h2 style="font-family: sans-serif; font-size: 18px;">¡Gracias por tu compra, ${customer.name}!</h2>
+            <p style="font-family: sans-serif; color: #555;">
+              Hemos recibido tu pedido correctamente. Nos pondremos en contacto contigo pronto para coordinar el envío.
+            </p>
+
+            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="font-family: sans-serif; margin-top: 0;">Resumen del pedido #${newOrder.id}</h3>
+              <ul style="list-style: none; padding: 0; font-family: sans-serif;">
+                ${items.map((item: OrderItem) => `
+                  <li style="border-bottom: 1px solid #eee; padding: 10px 0; display: flex; justify-content: space-between;">
+                    <span><strong>${item.quantity}x</strong> ${item.name}</span>
+                    <span>$${Number(item.price * item.quantity).toLocaleString()}</span>
+                  </li>
+                `).join('')}
+              </ul>
+              <div style="text-align: right; margin-top: 15px; font-size: 18px; font-weight: bold;">
+                Total: $${Number(total).toLocaleString()}
+              </div>
+            </div>
+
+            <p style="font-family: sans-serif; font-size: 12px; color: #999; text-align: center;">
+              Si tienes alguna duda escríbenos por WhatsApp.
+            </p>
+          </div>
+        `
+      });
+
+      console.log("Emails enviados con éxito");
     } catch (emailError) {
-      console.error("Error enviando email:", emailError);
+      console.error("Error enviando emails:", emailError);
+      // No bloqueamos la respuesta, el pedido ya se creó
     }
 
     return NextResponse.json({ success: true, orderId: newOrder.id });
     
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error procesando pedido:", error);
-    // Devolvemos el mensaje de error específico (ej: "Stock insuficiente")
     return NextResponse.json(
       { success: false, error: error.message || "Error al procesar el pedido" }, 
-      { status: 400 } // Bad Request
+      { status: 400 }
     );
   }
 }

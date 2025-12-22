@@ -23,6 +23,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
     if (categoryFromUrl && categories.includes(categoryFromUrl)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveCategory(categoryFromUrl);
     } else {
        setActiveCategory("Todo"); 
@@ -108,7 +109,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-12">
         {filteredProducts.map((product) => (
           <div key={product.id} className="group flex flex-col">
-            <Link href={`/producto/${product.id}`} className="relative w-full aspect-[3/4] mb-4 overflow-hidden rounded-md bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 block cursor-pointer">
+            <Link href={`/producto/${product.id}`} className="relative w-full aspect-3/4 mb-4 overflow-hidden rounded-md bg-gray-100 shadow-sm hover:shadow-md transition-shadow duration-300 block cursor-pointer">
               {product.images[0] ? (
                 <Image 
                   src={product.images[0].url} 
