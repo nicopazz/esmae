@@ -78,7 +78,6 @@ export default function CheckoutPage() {
     setIsSubmitting(true);
 
     try {
-      // Enviamos los datos a nuestra API
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -89,17 +88,19 @@ export default function CheckoutPage() {
         }),
       });
 
+      const result = await response.json(); // Leemos la respuesta
+
       if (response.ok) {
         clearCart();
-        toast.success("¡Pedido enviado con éxito! 🚀");
-        toast("Te contactaremos pronto por WhatsApp", { icon: "📱" });
-        router.push("/");
+        toast.success("¡Pedido enviado! Te contactaremos pronto.", { icon: "🚀", duration: 6000 });
+        router.push("/perfil"); // Redirigir al perfil para ver el pedido
       } else {
-        toast.error("Hubo un error al enviar el pedido 😓");
+        // Mostramos el error específico que nos mandó la API (ej: falta de stock)
+        toast.error(result.error || "Hubo un error al procesar el pedido.");
       }
     } catch (error) {
       console.error(error);
-      alert("Error de conexión.");
+      toast.error("Error de conexión.");
     } finally {
       setIsSubmitting(false);
     }

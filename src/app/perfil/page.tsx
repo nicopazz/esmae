@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import prisma from "@/lib/prisma";
 import Link from "next/link";
 import Image from "next/image";
-import { Package, Clock, CheckCircle, Truck, XCircle, ShoppingBag } from "lucide-react";
+import { Clock, CheckCircle, Truck, XCircle, ShoppingBag } from "lucide-react";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
