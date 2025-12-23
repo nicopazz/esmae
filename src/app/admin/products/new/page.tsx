@@ -66,7 +66,7 @@ export default function NewProductPage() {
 
       if (res.ok) {
         toast.success("Producto guardado correctamente ✨"); 
-        router.push("/admin");
+        router.push("/admin/products");
         router.refresh();
       } else {
         toast.error("Error al guardar el producto");
@@ -150,7 +150,7 @@ export default function NewProductPage() {
 
         {/* Botones */}
         <div className="flex justify-end gap-4 pt-4 border-t">
-          <Link href="/admin" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
+          <Link href="/admin/products" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
             Cancelar
           </Link>
           <button 

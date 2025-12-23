@@ -15,7 +15,8 @@ export default function AdminSidebar({ isOpen, onClose }: Props) {
 
   // Definimos tus enlaces aquí para mantener el código limpio
   const links = [ 
-    { name: "Productos", href: "/admin", icon: Package, exact: false },
+    { name: "Dasboard", href: "/admin", icon: Package, exact: false },
+    { name: "Productos", href: "/admin/products", icon: Package, exact: false },
     { name: "Pedidos", href: "/admin/orders", icon: ShoppingCart, exact: false },
     { name: "Usuarios", href: "/admin/users", icon: Users, exact: false },
   ];

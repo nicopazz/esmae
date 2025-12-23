@@ -84,7 +84,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
       if (res.ok) {
       
         toast.success("Producto guardado correctamente ✨"); 
-        router.push("/admin");
+        router.push("/admin/products");
         router.refresh();
       } else {
         toast.error("Error al guardar el producto");
@@ -155,7 +155,7 @@ export default function EditProductPage({ params }: { params: Promise<{ id: stri
         </div>
 
         <div className="flex justify-end gap-4 pt-4 border-t">
-          <Link href="/admin" className="px-4 py-2 text-sm text-gray-600 hover:text-black">Cancelar</Link>
+          <Link href="/admin/products" className="px-4 py-2 text-sm text-gray-600 hover:text-black">Cancelar</Link>
           <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Guardar Cambios</button>
         </div>
       </form>
