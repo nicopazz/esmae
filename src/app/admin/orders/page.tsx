@@ -1,7 +1,8 @@
 import prisma from "@/lib/prisma";
 import OrderStatus from "@/components/OrderStatus";
 import Image from "next/image"; 
-import Link from "next/link"; // Necesario para las pestañas
+import Link from "next/link";
+import DeleteOrderButton from "@/components/DeleteOrderButton";
 import { MessageSquare, Archive, ClipboardList } from "lucide-react"; 
 
 export const dynamic = "force-dynamic";
@@ -113,6 +114,7 @@ export default async function AdminOrders({
               <th className="px-6 py-4">Total</th>
               <th className="px-6 py-4">Fecha</th>
               <th className="px-6 py-4 text-center">Estado</th>
+              {showHistory && <th className="px-6 py-4 text-right">Acciones</th>}
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -205,7 +207,12 @@ export default async function AdminOrders({
                       <OrderStatus id={order.id} initialStatus={order.status} />
                   </div>
                 </td>
-
+                
+                {showHistory && (
+  <td className="px-6 py-4 text-right">
+     <DeleteOrderButton id={order.id} />
+  </td>
+                )}
               </tr>
             ))}
 
