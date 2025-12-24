@@ -58,10 +58,9 @@ export default function EditUserModal({ user, isOpen, onClose, onSuccess }: Prop
 
   return (
     <div className="fixed inset-0 z-60 flex items-center justify-center p-4">
-      {/* Overlay Oscuro */}
+      
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 
-      {/* Modal */}
       <div className="relative w-full max-w-md bg-white rounded-xl shadow-2xl p-6 border border-gray-100">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-black">
           <X size={20} />
@@ -103,7 +102,7 @@ export default function EditUserModal({ user, isOpen, onClose, onSuccess }: Prop
               <Lock size={12} /> Nueva Contraseña (Opcional)
             </label>
             <input
-              type="text" // Tipo text para que puedas ver lo que escribes al editar
+              type="text" 
               placeholder="Dejar vacío para no cambiar"
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
