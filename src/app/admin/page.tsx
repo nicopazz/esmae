@@ -189,12 +189,12 @@ export default async function AdminDashboard() {
                                     </div>
 
                                     {/* Barra */}
-                                    <div className="relative flex-1 w-full max-w-[32px] bg-gray-50 rounded-t-lg overflow-hidden flex items-end">
+                                    <div className="relative flex-1 w-full max-w-8 bg-gray-50 rounded-t-lg overflow-hidden flex items-end">
                                         <div 
                                             className="w-full bg-gray-900 transition-all duration-1000 ease-out group-hover:bg-black rounded-t-lg relative"
                                             style={{ height: `${d.total > 0 ? (d.total / maxVal) * 100 : 0}%` }}
                                         >
-                                            <div className="absolute top-0 inset-x-0 h-[1px] bg-white/20"></div>
+                                            <div className="absolute top-0 inset-x-0 h-px bg-white/20"></div>
                                         </div>
                                     </div>
 

@@ -71,25 +71,35 @@ export default function AddToCartBtn({ product }: Props) {
         </button>
       </div>
 
-      {/* BOTÓN AGREGAR */}
       <button
-        onClick={handleAddToCart}
-        className={`flex-1 flex items-center justify-center gap-2 font-bold uppercase tracking-widest transition-all duration-300 rounded ${
-          isAdded
-            ? "bg-green-600 text-white"
-            : "bg-black text-white hover:bg-gray-800"
-        }`}
-      >
-        {isAdded ? (
-          <>
-            <Check size={20} /> Agregado
-          </>
-        ) : (
-          <>
-            <ShoppingBag size={20} /> Agregar al Carrito
-          </>
-        )}
-      </button>
+  onClick={handleAddToCart}
+  className={`
+    flex-1 flex items-center justify-center gap-2 rounded transition-all duration-300
+    
+    /* --- CAMBIOS RESPONSIVE --- */
+    py-3 sm:py-2               /* Más alto en móvil para tocar fácil, más compacto en PC */
+    text-xs sm:text-sm         /* Texto pequeño en móvil, normal en tablet/PC */
+    font-bold uppercase 
+    tracking-wider sm:tracking-widest /* Menos espaciado entre letras en móvil */
+    
+    ${isAdded
+      ? "bg-green-600 text-white"
+      : "bg-black text-white hover:bg-gray-800"
+    }
+  `}
+>
+  {isAdded ? (
+    <>
+      <Check size={18} className="sm:w-5 sm:h-5" /> {/* Icono un poco más chico en móvil */}
+      <span>Agregado</span>
+    </>
+  ) : (
+    <>
+      <ShoppingBag size={18} className="sm:w-5 sm:h-5" />
+      <span>Agregar al Carrito</span>
+    </>
+  )}
+</button>
     </div>
   );
 }
