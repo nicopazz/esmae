@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🪞 ESMAE - E-commerce Full Stack
 
-## Getting Started
+![Esmae Banner](https://i.imgur.com/g1L6ey0.png)
 
-First, run the development server:
+## 📋 Descripción
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Esmae** es una plataforma de comercio electrónico moderna diseñada para la venta de artículos de decoración, espejos y bazar. Este proyecto fue desarrollado desde cero para simular un entorno de producción real, enfocándose en la experiencia de usuario (UX), el rendimiento y una administración de datos eficiente.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El objetivo principal fue construir una solución **Full Stack** escalable utilizando las últimas tecnologías del ecosistema React y Next.js.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔗 **[esmae.vercel.app](https://esmae.vercel.app/)**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Tecnologías Utilizadas
 
-To learn more about Next.js, take a look at the following resources:
+### Frontend
+- **Next.js 15 (App Router):** Framework principal para renderizado híbrido (SSR/CSR).
+- **React & TypeScript:** Para una UI robusta y tipada.
+- **Tailwind CSS:** Diseño 100% responsive y estilizado moderno.
+- **Lucide React:** Iconografía optimizada.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend & Base de Datos
+- **Next.js API Routes:** API RESTful integrada.
+- **Prisma ORM:** Manejo de base de datos y migraciones.
+- **MySQL (Railway):** Base de datos relacional en la nube.
+- **NextAuth.js:** Autenticación segura y gestión de sesiones.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Infraestructura
+- **Vercel:** Despliegue continuo (CI/CD).
+- **Cloudinary:** (Si usaste para imágenes) Gestión de medios en la nube.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## ✨ Funcionalidades Clave
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 👤 Para el Cliente:
+- **Catálogo Dinámico:** Filtrado de productos por categorías y búsqueda en tiempo real.
+- **Carrito de Compras:** Persistencia de estado y gestión de cantidades (Context API).
+- **Diseño Responsive:** Adaptado perfectamente a móviles, tablets y escritorio.
+- **Contacto Directo:** Integración con WhatsApp para consultas rápidas.
+
+### 🛡️ Para el Administrador:
+- **Panel de Control (Dashboard):** Acceso protegido por roles.
+- **Gestión de Productos:** Crear, editar y eliminar productos (CRUD completo).
+- **Vista de Órdenes:** (Si lo implementaste) Seguimiento de pedidos.
+
+---
+
+## 🛠️ Instalación y Configuración Local
+
+Si deseas correr este proyecto en tu máquina local:
+
+1. **Clonar el repositorio:**
+   ```bash
+   git clone https://github.com/nicopazz/esmae.git
+   cd esmae
+2. **Instalar dependencias:**
+   ```bash
+   npm install
+3. **Configurar Variables de Entorno: Crea un archivo .env en la raíz y agrega:**
+   ```bash
+    DATABASE_URL= "mysql://usuario:password@localhost:3306/esmae_db"
+    RESEND_API_KEY="re_VLZ9239n_565EEht3HgspTAiCNiUTCv6Z"
+    EXT_PUBLIC_CLOUDINARY_CLOUD_NAME="Tuclave"
+    NEXT_PUBLIC_CLOUDINARY_PRESET="Tuclave"
+    NEXTAUTH_URL="http://localhost:3000"
+    NEXTAUTH_SECRET="tu_secreto_super_seguro"
+4. **Configurar la Base de Datos:**
+   ```bash
+    npx prisma generate
+    npx prisma db push
+5. **Configurar la Base de Datos:**
+   ```bash
+    npm run dev
+
+
+## 🧠 Aprendizajes del Proyecto:
+Durante el desarrollo de Esmae, profundicé en:
+
+- **Manejo de Caché en Next.js:**  Aprendí a controlar el Static Site Generation y forzar el renderizado dinámico (force-dynamic) para datos en tiempo real.
+
+- **Gestión de Estado:** Uso de Context API para manejar el carrito de compras globalmente.
+
+- **Despliegue en Producción:** Configuración de bases de datos remotas en Railway y variables de entorno en Vercel.
+
+## 📬 Contacto
+
+**Nicolás Paz - Full Stack Developer**
