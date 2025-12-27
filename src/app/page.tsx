@@ -4,6 +4,7 @@ import Collections from "@/components/Collections"
 import ProductGrid from "@/components/ProductGrid" // <--- Este componente ahora hará todo el trabajo
 import StorySection from "@/components/StorySection" 
 import Footer from "@/components/Footer" 
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   // 1. Buscamos productos (Server Side)
