@@ -15,7 +15,7 @@ export default function AddToCartBtn({ product }: Props) {
   const [count, setCount] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
-  // Si no hay stock
+  
   if (product.stock <= 0) {
     return (
       <button
@@ -42,13 +42,13 @@ export default function AddToCartBtn({ product }: Props) {
   const handleAddToCart = () => {
     addItem(product, count);
     setIsAdded(true);
-    setCount(1); // Reseteamos el contador a 1 después de agregar
+    setCount(1); 
     setTimeout(() => setIsAdded(false), 2000);
   };
 
   return (
     <div className="flex gap-4 h-14">
-      {/* SELECTOR DE CANTIDAD */}
+  
       <div className="flex items-center border border-gray-300 rounded w-32 shrink-0">
         <button 
           onClick={handleDecrease}
@@ -90,7 +90,7 @@ export default function AddToCartBtn({ product }: Props) {
 >
   {isAdded ? (
     <>
-      <Check size={18} className="sm:w-5 sm:h-5" /> {/* Icono un poco más chico en móvil */}
+      <Check size={18} className="sm:w-5 sm:h-5" /> 
       <span>Agregado</span>
     </>
   ) : (

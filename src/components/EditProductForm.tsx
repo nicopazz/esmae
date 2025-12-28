@@ -23,13 +23,12 @@ export default function EditProductForm({ product, categories }: EditProductForm
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(product.images?.[0]?.url || "");
 
-  // Inicializamos el estado con los datos que nos llegan del servidor
   const [formData, setFormData] = useState({
     name: product.name,
     description: product.description || "",
     price: Number(product.price),
     stock: product.stock,
-    categoryId: product.categoryId, // Usamos el ID real que viene del producto
+    categoryId: product.categoryId, 
     material: product.material || "",
     dimensions: product.dimensions || "",
   });

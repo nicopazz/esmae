@@ -3,13 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Trash2, Loader2 } from "lucide-react";
-import { toast, type Toast } from "react-hot-toast"; // Importamos 'type Toast' para evitar errores de TS
+import { toast, type Toast } from "react-hot-toast"; 
 
 export default function DeleteButton({ id }: { id: number }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
-  // Lógica para borrar (mantenemos tu fetch original)
   const performDelete = async () => {
     setIsDeleting(true);
     const toastId = toast.loading("Eliminando producto...");
@@ -22,7 +21,7 @@ export default function DeleteButton({ id }: { id: number }) {
       if (res.ok) {
         toast.dismiss(toastId);
         toast.success("Producto eliminado");
-        router.refresh(); // Recargamos la vista
+        router.refresh(); 
       } else {
         toast.dismiss(toastId);
         toast.error("Error al eliminar");
@@ -36,7 +35,6 @@ export default function DeleteButton({ id }: { id: number }) {
     }
   };
 
-  // Lógica visual del Toast (Confirmación)
   const handleDeleteClick = () => {
     toast((t: Toast) => (
       <div className="flex flex-col gap-3 p-1 min-w-50">
@@ -47,19 +45,16 @@ export default function DeleteButton({ id }: { id: number }) {
         </div>
         
         <div className="flex gap-2 justify-center mt-2">
-          {/* Botón Cancelar */}
           <button
             onClick={() => toast.dismiss(t.id)}
             className="px-3 py-1.5 bg-gray-100 text-black text-xs font-bold rounded hover:bg-gray-200 transition-colors"
           >
             Cancelar
           </button>
-          
-          {/* Botón Confirmar */}
           <button
             onClick={() => {
-              toast.dismiss(t.id); // Cerramos la alerta
-              performDelete();     // Ejecutamos el borrado
+              toast.dismiss(t.id); 
+              performDelete();     
             }}
             className="px-3 py-1.5 bg-red-600 text-white text-xs font-bold rounded hover:bg-red-700 shadow-sm transition-colors"
           >

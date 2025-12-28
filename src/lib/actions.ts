@@ -1,4 +1,3 @@
-// src/lib/actions.ts
 'use server'
 
 import prisma from "@/lib/prisma";
@@ -6,8 +5,6 @@ import { revalidatePath } from "next/cache";
 
 export async function deleteOrder(id: number) {
   try {
-    // Usamos una transacción para borrar primero los ítems y luego el pedido
-    // Esto evita que la base de datos de error por claves foráneas
     await prisma.$transaction(async (tx) => {
       await tx.orderItem.deleteMany({
         where: { orderId: id }

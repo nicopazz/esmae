@@ -15,7 +15,7 @@ import {
   X,
   ChevronRight,
   LogOut,
-  Package, // <--- Importamos Package para el icono de pedidos
+  Package, 
 } from "lucide-react";
 
 export default function Navbar() {
@@ -78,16 +78,14 @@ export default function Navbar() {
     );
   };
 
-  // Helper para verificar si es admin (ya no necesita 'as any' gracias a los tipos)
+  
   const isAdmin = session?.user?.role === "ADMIN";
 
   return (
     <>
-      {/* --- BARRA DE NAVEGACIÓN --- */}
       <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
           
-          {/* 1. IZQUIERDA */}
           <div className="flex-1 flex justify-start items-center">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
@@ -120,7 +118,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* 2. CENTRO: Logo */}
           <div className="flex-0 relative flex justify-center items-center">
             <Link 
               href="/" 
@@ -137,11 +134,9 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* 3. DERECHA */}
           <div className="flex-1 flex justify-end items-center gap-4 sm:gap-6">
             {session ? (
               <div className="hidden md:flex items-center gap-3">
-                {/* LÓGICA DE ADMIN (SOLO VISIBLE SI EL ROL ES ADMIN) */}
                 {isAdmin && (
                   <Link
                     href="/admin"
@@ -153,7 +148,6 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                {/* --- BOTÓN MIS PEDIDOS (NUEVO) --- */}
                 <Link
                   href="/perfil"
                   className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest bg-gray-100 text-gray-900 px-3 py-2 rounded-full hover:bg-gray-200 transition-colors"
@@ -162,7 +156,6 @@ export default function Navbar() {
                   <Package size={16} />
                   <span className="hidden lg:inline">Mis Pedidos</span>
                 </Link>
-                {/* -------------------------------- */}
                 
                 <button
                   onClick={handleLogout}
@@ -198,7 +191,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* --- MENÚ MÓVIL --- */}
       <div
         className={`fixed inset-0 bg-black/50 z-50 transition-opacity duration-300 md:hidden ${
           isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible"
@@ -259,7 +251,6 @@ export default function Navbar() {
 
             {session ? (
               <div className="space-y-4">
-                {/* LÓGICA DE ADMIN MÓVIL (SOLO VISIBLE SI EL ROL ES ADMIN) */}
                 {isAdmin && (
                   <Link
                     href="/admin"
@@ -271,7 +262,6 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                {/* --- BOTÓN MIS PEDIDOS MÓVIL (NUEVO) --- */}
                 <Link
                   href="/perfil"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -280,7 +270,6 @@ export default function Navbar() {
                   <Package size={18} />
                   Mis Pedidos
                 </Link>
-                {/* --------------------------------------- */}
                 
                 <button
                   onClick={() => {

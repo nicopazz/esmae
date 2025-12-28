@@ -4,22 +4,21 @@ import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, X } from "lucide-react"; // Importamos iconos nuevos
+import { Search, X } from "lucide-react"; 
 
-// Componente interno
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function ProductGridContent({ products, title }: { products: any[], title?: string }) {
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("Todo");
-  const [searchTerm, setSearchTerm] = useState(""); // NUEVO: Estado para la búsqueda
+  const [searchTerm, setSearchTerm] = useState(""); 
 
-  // 1. Extraer categorías únicas
+  
   const categories = useMemo(() => {
     const cats = products.map((p) => p.category.name);
     return ["Todo", ...Array.from(new Set(cats))];
   }, [products]);
 
-  // 2. EFECTO: Detectar categoría desde URL
+ 
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
     if (categoryFromUrl && categories.includes(categoryFromUrl)) {
@@ -30,12 +29,10 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
     }
   }, [searchParams, categories]);
 
-  // 3. FILTRADO DOBLE (Categoría + Texto)
+  
   const filteredProducts = products.filter((p) => {
-    // Filtro por Categoría
     const matchesCategory = activeCategory === "Todo" || p.category.name === activeCategory;
-    
-    // Filtro por Texto (Nombre o Categoría)
+
     const term = searchTerm.toLowerCase();
     const matchesSearch = 
         p.name.toLowerCase().includes(term) || 
@@ -46,11 +43,7 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
 
   return (
     <div className="mt-15 space-y-8">
-      
-      {/* --- HEADER + CONTROLES --- */}
       <div className="flex flex-col gap-6 mb-8">
-        
-        {/* Título y Buscador */}
         <div className="flex flex-col md:flex-row justify-between items-end gap-4">
             <div className="w-full md:w-auto">
               {title && (
@@ -64,8 +57,6 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
                 </>
               )}
             </div>
-
-            {/* BARRA DE BÚSQUEDA (NUEVO) */}
             <div className="relative w-full md:w-72">
                 <input
                     type="text"
@@ -87,7 +78,6 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
             </div>
         </div>
 
-        {/* Filtros de Categoría */}
         <div className="flex flex-wrap gap-2">
           {categories.map((cat) => (
             <button
@@ -105,7 +95,6 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
         </div>
       </div>
 
-      {/* --- GRILLA DE RESULTADOS --- */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-12">
         {filteredProducts.map((product) => (
           <div key={product.id} className="group flex flex-col">
@@ -147,7 +136,6 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
           </div>
         ))}
 
-        {/* Estado Vacío */}
         {filteredProducts.length === 0 && (
             <div className="col-span-full flex flex-col items-center justify-center py-20 text-gray-400 bg-gray-50 rounded-lg border border-dashed border-gray-200">
                 <Search className="mb-4 text-gray-300" size={32} />
@@ -165,7 +153,6 @@ function ProductGridContent({ products, title }: { products: any[], title?: stri
   );
 }
 
-// Exportamos envuelto en Suspense
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function ProductGrid(props: { products: any[], title?: string }) {
   return (

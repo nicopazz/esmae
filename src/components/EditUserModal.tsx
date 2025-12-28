@@ -20,7 +20,7 @@ export default function EditUserModal({ user, isOpen, onClose, onSuccess }: Prop
   const [form, setForm] = useState({
     name: user.name,
     email: user.email,
-    password: "", // Vacío por defecto (si no escribe nada, no se cambia)
+    password: "", 
   });
 
   if (!isOpen) return null;
@@ -30,7 +30,6 @@ export default function EditUserModal({ user, isOpen, onClose, onSuccess }: Prop
     setLoading(true);
 
     try {
-      // Filtramos para enviar solo lo que tenga datos
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const body: any = { name: form.name, email: form.email };
       if (form.password) body.password = form.password;

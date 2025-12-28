@@ -7,7 +7,7 @@ export async function POST(request: Request) {
     const data = await request.json();
     const { name, email, password } = data;
 
-    // 1. Validar datos
+    //  Validar datos
     if (!name || !email || !password) {
       return NextResponse.json(
         { message: "Faltan datos obligatorios" },
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Verificar si ya existe
+    // Verificar si ya existe
     const userFound = await prisma.user.findUnique({
       where: { email: email },
     });
@@ -27,20 +27,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Encriptar contraseña
+    // Encriptar contraseña
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Crear usuario (FORZANDO ROL 'USER')
+    // Crear usuario
     const newUser = await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
-        role: "USER", // <--- ESTO GARANTIZA QUE SEA CLIENTE
+        role: "USER", 
       },
     });
 
-    // Quitamos el password de la respuesta por seguridad
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password: _, ...user } = newUser;
 
     return NextResponse.json(user, { status: 201 });

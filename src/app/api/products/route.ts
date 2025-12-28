@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, description, price, stock, categoryId, image, material, dimensions } = body;
 
-    // 1. Validaciones básicas antes de llamar a la DB
+    //Validaciones básicas antes de llamar a la DB
     if (!name || !price || !categoryId) {
       return NextResponse.json(
         { error: "Faltan datos: Nombre, Precio y Categoría son obligatorios." },
@@ -14,22 +14,21 @@ export async function POST(request: Request) {
       );
     }
 
-    // 2. Intentar crear el producto
+    // Intentar crear el producto
     const newProduct = await prisma.product.create({
       data: {
         name,
-        // Generamos slug y nos aseguramos de limpiar caracteres raros
         slug: name.toLowerCase().trim().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''),
         description: description || "",
         price: Number(price),
         stock: Number(stock) || 0,
-        categoryId: Number(categoryId), // Aseguramos que sea número
+        categoryId: Number(categoryId), 
         material: material || null,
         dimensions: dimensions || null,
       }
     });
 
-    // 3. Crear la imagen relacionada (Si existe)
+    // Crear la imagen relacionada
     if (image) {
       await prisma.productImage.create({
         data: {

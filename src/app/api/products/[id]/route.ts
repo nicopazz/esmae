@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 // GET
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params; // <--- CLAVE: Usamos await aquí
+  const { id } = await params; 
   const productId = parseInt(id);
 
   const product = await prisma.product.findUnique({
@@ -15,8 +15,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   return NextResponse.json(product);
 }
 
-// PUT (Editar)
-// PUT: Editar producto
+// PUT 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -25,7 +24,6 @@ export async function PUT(
   const productId = parseInt(id);
   
   const body = await request.json();
-  // Desestructuramos los datos que llegan del formulario
   const { name, description, price, stock, categoryId, image, material, dimensions } = body;
 
   try {
@@ -34,19 +32,16 @@ export async function PUT(
       data: {
         name,
         description,
-        
-        // 🚨 AQUÍ ESTABA EL ERROR:
-        // Convertimos forzosamente a Número antes de guardar
-        price: Number(price),          // <--- "1500" se convierte en 1500
-        stock: Number(stock),          // <--- "5" se convierte en 5
-        categoryId: Number(categoryId),// <--- "2" se convierte en 2
+        price: Number(price),        
+        stock: Number(stock),         
+        categoryId: Number(categoryId),
         
         material,
         dimensions,
       }
     });
 
-    // Si hay imagen nueva, actualizamos...
+    // Si hay imagen nueva, actualizamos
     if (image) {
       await prisma.productImage.deleteMany({ where: { productId: productId } });
       await prisma.productImage.create({
@@ -56,12 +51,12 @@ export async function PUT(
 
     return NextResponse.json(updatedProduct);
   } catch (error) {
-    console.error("Error al actualizar:", error); // Esto te ayudará a ver errores en la terminal
+    console.error("Error al actualizar:", error); 
     return NextResponse.json({ error: "Error al actualizar" }, { status: 500 });
   }
 }
 
-// DELETE (Borrar)
+// DELETE 
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const productId = parseInt(id);

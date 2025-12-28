@@ -18,7 +18,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validaciones básicas
     if (form.password !== form.confirmPassword) {
       toast.error("Las contraseñas no coinciden");
       return;
@@ -45,7 +44,7 @@ export default function RegisterPage() {
 
       if (res.ok) {
         toast.success("¡Cuenta creada con éxito! 🎉");
-        router.push("/auth/login"); // Redirigir al login
+        router.push("/auth/login"); 
       } else {
         toast.error(data.message || "Error al registrarse");
       }

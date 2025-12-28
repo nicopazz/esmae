@@ -29,9 +29,8 @@ export async function POST(request: Request) {
       if (user) userId = user.id;
     }
 
-    // 2. TRANSACCIÓN (Stock + Pedido)
+    //  TRANSACCIÓN (Stock + Pedido)
     const newOrder = await prisma.$transaction(async (tx) => {
-      // A. Verificar y descontar stock
       for (const item of items) {
         const product = await tx.product.findUnique({
           where: { id: Number(item.id) }
@@ -49,7 +48,7 @@ export async function POST(request: Request) {
         });
       }
 
-      // B. Crear pedido
+      // Crear pedido
       return await tx.order.create({
         data: {
           customerName: customer.name,
@@ -70,9 +69,9 @@ export async function POST(request: Request) {
       });
     });
 
-    // 3. ENVÍO DE EMAILS (Doble envío)
+    //  ENVÍO DE EMAILS 
     try {
-      // A. Email para el ADMIN (Tú)
+      // Email para el ADMIN
       await resend.emails.send({
         from: 'Esmae Web <onboarding@resend.dev>',
         to: ['nicopazmalizia@gmail.com'], 
@@ -90,10 +89,10 @@ export async function POST(request: Request) {
         `
       });
 
-      // B. Email para el CLIENTE (Confirmación)
+      //  Email para el CLIENTE
       await resend.emails.send({
         from: 'Esmae Web <onboarding@resend.dev>',
-        to: [customer.email], // Enviamos al mail del formulario
+        to: [customer.email], 
         subject: `Confirmación de Pedido #${newOrder.id} - Esmae`,
         html: `
           <div style="font-family: 'Times New Roman', serif; max-width: 600px; margin: 0 auto; color: #000;">
@@ -130,7 +129,6 @@ export async function POST(request: Request) {
       console.log("Emails enviados con éxito");
     } catch (emailError) {
       console.error("Error enviando emails:", emailError);
-      // No bloqueamos la respuesta, el pedido ya se creó
     }
 
     return NextResponse.json({ success: true, orderId: newOrder.id });

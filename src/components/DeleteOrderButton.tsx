@@ -31,7 +31,6 @@ export default function DeleteOrderButton({ id }: { id: number }) {
   };
 
   const handleDeleteClick = () => {
-    // Confirmación visual estilo Toast
     toast((t: Toast) => (
       <div className="flex flex-col gap-3 p-1 min-w-50">
         <div className="text-center">

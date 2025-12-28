@@ -1,20 +1,18 @@
 import prisma from "@/lib/prisma"
 import Hero from "@/components/Hero"
 import Collections from "@/components/Collections"
-import ProductGrid from "@/components/ProductGrid" // <--- Este componente ahora hará todo el trabajo
+import ProductGrid from "@/components/ProductGrid" 
 import StorySection from "@/components/StorySection" 
 import Footer from "@/components/Footer" 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  // 1. Buscamos productos (Server Side)
   const rawProducts = await prisma.product.findMany({
     include: { category: true, images: true },
     orderBy: { createdAt: 'desc' }, 
     take: 8 
   })
 
-  // 2. Transformamos datos
   const products = rawProducts.map((product) => ({
     ...product,
     price: product.price.toNumber(),

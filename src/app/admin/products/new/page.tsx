@@ -9,10 +9,10 @@ import { toast } from "react-hot-toast";
 export default function NewProductPage() {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imageUrl, setImageUrl] = useState(""); // Aquí guardaremos la URL de la foto subida
+  const [imageUrl, setImageUrl] = useState(""); 
   const [uploading, setUploading] = useState(false);
 
-  // Función para subir la imagen a Cloudinary
+  
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -20,7 +20,6 @@ export default function NewProductPage() {
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    // Usamos las variables de entorno que configuraste
     formData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_PRESET || ""); 
     formData.append("cloud_name", process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "");
 
@@ -30,7 +29,7 @@ export default function NewProductPage() {
         { method: "POST", body: formData }
       );
       const data = await res.json();
-      setImageUrl(data.secure_url); // ¡Guardamos la URL de la nube!
+      setImageUrl(data.secure_url); 
       setUploading(false);
     } catch (error) {
       console.error("Error subiendo imagen:", error);
@@ -45,14 +44,14 @@ export default function NewProductPage() {
 
     const formData = new FormData(e.currentTarget);
     
-    // Armamos el objeto para enviar a la API
+    
     const productData = {
       name: formData.get("name"),
       description: formData.get("description"),
       price: Number(formData.get("price")),
       stock: Number(formData.get("stock")),
-      categoryId: Number(formData.get("categoryId")), // 1=Espejos, 2=Bazar, etc.
-      image: imageUrl, // La URL de Cloudinary
+      categoryId: Number(formData.get("categoryId")), 
+      image: imageUrl, 
       material: formData.get("material"),
       dimensions: formData.get("dimensions"),
     };
@@ -84,13 +83,13 @@ export default function NewProductPage() {
       
       <form onSubmit={handleSubmit} className="space-y-6">
         
-        {/* Nombre */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Nombre del Producto</label>
           <input name="name" required className="w-full border p-2 rounded-md" placeholder="Ej: Espejo Circular" />
         </div>
 
-        {/* Imagen (Cloudinary) */}
+       
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Imagen Principal</label>
           <input 
@@ -108,7 +107,7 @@ export default function NewProductPage() {
           )}
         </div>
 
-        {/* Precio y Stock */}
+       
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Precio ($)</label>
@@ -120,7 +119,7 @@ export default function NewProductPage() {
           </div>
         </div>
 
-        {/* Categoría (Manual por ahora, luego lo haremos dinámico) */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
           <select name="categoryId" className="w-full border p-2 rounded-md bg-white">
@@ -130,7 +129,7 @@ export default function NewProductPage() {
           </select>
         </div>
 
-        {/* Detalles */}
+        
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
@@ -142,13 +141,13 @@ export default function NewProductPage() {
           </div>
         </div>
 
-        {/* Descripción */}
+        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
           <textarea name="description" rows={4} className="w-full border p-2 rounded-md" placeholder="Detalles del producto..."></textarea>
         </div>
 
-        {/* Botones */}
+       
         <div className="flex justify-end gap-4 pt-4 border-t">
           <Link href="/admin/products" className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-900">
             Cancelar

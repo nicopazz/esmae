@@ -25,7 +25,6 @@ export default function CheckoutPage() {
     toast(
       (t) => (
         <div className="flex flex-col gap-4 p-2 min-w-75">
-          {/* Encabezado más visual */}
           <div className="text-center">
             <span className="text-2xl mb-2 block">⚠️</span>{" "}
             <h3 className="font-bold text-lg text-white">
@@ -37,7 +36,6 @@ export default function CheckoutPage() {
           </div>
 
           <div className="grid grid-cols-2 gap-3 mt-2">
-            {/* Botón de Cancelar */}
             <button
               className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded transition-colors"
               onClick={() => toast.dismiss(t.id)}
@@ -45,7 +43,6 @@ export default function CheckoutPage() {
               Cancelar
             </button>
 
-            {/* Botón de Confirmar */}
             <button
               className="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded shadow-sm transition-colors"
               onClick={() => {
@@ -66,7 +63,7 @@ export default function CheckoutPage() {
     );
   };
 
-  // Manejo del formulario
+ 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -93,9 +90,8 @@ export default function CheckoutPage() {
       if (response.ok) {
         clearCart();
         toast.success("¡Pedido enviado! Te contactaremos pronto.", { icon: "🚀", duration: 6000 });
-        router.push("/perfil"); // Redirigir al perfil para ver el pedido
+        router.push("/perfil"); 
       } else {
-        // Mostramos el error específico que nos mandó la API (ej: falta de stock)
         toast.error(result.error || "Hubo un error al procesar el pedido.");
       }
     } catch (error) {
@@ -128,7 +124,6 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {/* COLUMNA 1: FORMULARIO */}
         <div className="bg-white p-8 rounded-sm shadow-sm h-fit">
           <h2 className="text-2xl font-serif text-gray-900 mb-6">
             Datos de Contacto
@@ -204,7 +199,6 @@ export default function CheckoutPage() {
           </form>
         </div>
 
-        {/* COLUMNA 2: RESUMEN DEL PEDIDO */}
         <div>
           
           <div className="bg-white p-8 rounded-sm shadow-sm space-y-6">
@@ -233,13 +227,11 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
-                {/* Info + Controles */}
                 <div className="flex-1">
                   <h3 className="font-serif text-lg text-gray-900">
                     {item.name}
                   </h3>
 
-                  {/* CONTROLES DE CANTIDAD */}
                   <div className="flex items-center mt-2 gap-3">
                     <button
                       onClick={() => decreaseItem(item.id)}
@@ -251,7 +243,7 @@ export default function CheckoutPage() {
                       {item.quantity}
                     </span>
                     <button
-                      onClick={() => addItem(item)} // Reutilizamos addItem que ya tiene la lógica de stock
+                      onClick={() => addItem(item)} 
                       disabled={item.quantity >= item.stock}
                       className={`w-6 h-6 rounded-full flex items-center justify-center transition-colors ${
                         item.quantity >= item.stock
@@ -270,7 +262,6 @@ export default function CheckoutPage() {
                   )}
                 </div>
 
-                {/* Precio y Borrar */}
                 <div className="text-right">
                   <p className="font-bold text-gray-900">
                     ${(item.price * item.quantity).toLocaleString()}
@@ -282,9 +273,6 @@ export default function CheckoutPage() {
               </div>
             ))}
 
-            {/* ... Total ... */}
-
-            {/* TOTAL */}
             <div className="border-t border-gray-200 pt-6 mt-6">
               <div className="flex justify-between items-center">
                 <span className="text-lg font-serif text-gray-900">

@@ -15,20 +15,20 @@ export default async function AdminOrders({
   const { view } = await searchParams;
   
   // LOGICA DE PESTAÑAS
-  const showHistory = view === "history"; // Si la URL tiene ?view=history
+  const showHistory = view === "history"; 
   const activeTabClass = "bg-black text-white shadow-md";
   const inactiveTabClass = "bg-white text-gray-600 hover:bg-gray-50";
 
-  // 1. Obtener la fecha de hoy (Para el resumen, SIEMPRE calculamos sobre todo)
+  // Obtener la fecha de hoy 
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
 
-  // 2. Definir Filtro según la pestaña
+  // Definir Filtro según la pestaña
   const whereStatus = showHistory 
-    ? { in: ["entregada", "cancelada"] } // Historial
-    : { in: ["pendiente", "pagada"] };   // Activos (Default)
+    ? { in: ["entregada", "cancelada"] } 
+    : { in: ["pendiente", "pagada"] };   
 
-  // 3. Buscar Pedidos (Filtrados)
+  //  Buscar Pedidos 
   const orders = await prisma.order.findMany({
     where: {
       status: whereStatus 
@@ -45,8 +45,7 @@ export default async function AdminOrders({
     orderBy: { createdAt: "desc" },
   });
 
-  // 4. Calcular métricas de HOY (Independiente del filtro visual)
-  // Hacemos una consulta rápida extra solo para el contador de hoy, para que sea preciso
+
   const todaysStats = await prisma.order.aggregate({
     where: { createdAt: { gte: startOfToday } },
     _count: true,
@@ -56,7 +55,7 @@ export default async function AdminOrders({
   return (
     <div className="space-y-8 pb-20">
       
-      {/* SECCIÓN 1: RESUMEN DEL DÍA (Siempre visible) */}
+      
       <div className="bg-black text-white p-6 rounded-lg shadow-lg flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-sm font-bold uppercase tracking-widest text-gray-400">
@@ -76,7 +75,7 @@ export default async function AdminOrders({
         </div>
       </div>
 
-      {/* HEADER + PESTAÑAS */}
+    
       <div className="flex flex-col md:flex-row justify-between items-end gap-4">
         <div>
             <h1 className="text-2xl font-bold text-gray-900">
@@ -87,7 +86,7 @@ export default async function AdminOrders({
             </p>
         </div>
 
-        {/* CONTROLES DE PESTAÑAS */}
+       
         <div className="flex bg-gray-100 p-1 rounded-lg">
             <Link 
                 href="/admin/orders" 
@@ -104,7 +103,7 @@ export default async function AdminOrders({
         </div>
       </div>
 
-      {/* SECCIÓN 2: LISTA DE PEDIDOS */}
+      
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-x-auto">
         <table className="w-full text-left text-sm text-gray-600 min-w-225">
           <thead className="bg-gray-50 text-gray-900 font-semibold uppercase tracking-wider text-xs border-b border-gray-200">
@@ -124,14 +123,14 @@ export default async function AdminOrders({
                 className="hover:bg-gray-50 transition-colors align-top"
               >
                 
-                {/* 1. COLUMNA CLIENTE + NOTA */}
+                
                 <td className="px-6 py-4 max-w-62.5">
                   <p className="font-bold text-gray-900 text-base">
                     {order.customerName}
                   </p>
                   <p className="text-xs text-gray-500 mb-2">{order.email}</p>
                   
-                  {/* Botón WhatsApp */}
+                  
                   <a
                     href={`https://wa.me/${order.phone}`}
                     target="_blank"
@@ -149,13 +148,13 @@ export default async function AdminOrders({
                   )}
                 </td>
 
-                {/* 2. COLUMNA PRODUCTOS */}
+                
                 <td className="px-6 py-4">
                   <div className="space-y-4">
                     {order.items.map((item) => (
                       <div key={item.id} className="flex items-start gap-3">
                         
-                        {/* FOTO */}
+                        
                         <div className="h-10 w-10 relative bg-gray-100 rounded border border-gray-200 shrink-0 overflow-hidden">
                            {item.product.images && item.product.images[0] ? (
                               <Image 
@@ -169,7 +168,7 @@ export default async function AdminOrders({
                            )}
                         </div>
                         
-                        {/* CANTIDAD Y NOMBRE */}
+                        
                         <div>
                           <p className="text-gray-900 text-sm font-medium leading-tight">
                               <span className="inline-flex items-center justify-center bg-gray-200 text-black text-[10px] font-bold h-5 w-5 rounded-full mr-2">
@@ -183,12 +182,12 @@ export default async function AdminOrders({
                   </div>
                 </td>
 
-                {/* 3. TOTAL */}
+                
                 <td className="px-6 py-4 font-bold text-gray-900 text-base">
                   ${Number(order.total).toLocaleString("es-AR")}
                 </td>
 
-                {/* 4. FECHA */}
+                
                 <td className="px-6 py-4 text-xs text-gray-500">
                   <div className="flex flex-col gap-1">
                       <span className="font-medium text-gray-900">
@@ -201,7 +200,7 @@ export default async function AdminOrders({
                   <p className="text-[10px] text-gray-300 mt-1 font-mono">#{order.id}</p>
                 </td>
 
-                {/* 5. ESTADO (Usamos el componente nuevo) */}
+                
                 <td className="px-6 py-4 text-center">
                   <div className="flex justify-center">
                       <OrderStatus id={order.id} initialStatus={order.status} />

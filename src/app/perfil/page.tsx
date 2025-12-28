@@ -13,7 +13,7 @@ export default async function ProfilePage() {
     redirect("/auth/login");
   }
 
-  // Buscar pedidos del usuario logueado
+ 
   const orders = await prisma.order.findMany({
     where: { userId: Number(session.user.id) },
     include: {
@@ -22,7 +22,7 @@ export default async function ProfilePage() {
     orderBy: { createdAt: "desc" },
   });
 
-  // Helper visual para los estados
+  
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case "pendiente":
@@ -62,7 +62,7 @@ export default async function ProfilePage() {
     <div className="min-h-screen bg-[#FAFAFA] py-24 px-4 md:px-8">
       <div className="max-w-4xl mx-auto space-y-10">
         
-        {/* --- HEADER PERFIL --- */}
+       
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-serif text-gray-900 mb-1">Mis Pedidos</h1>
@@ -80,7 +80,7 @@ export default async function ProfilePage() {
           </div>
         </div>
 
-        {/* --- LISTA DE PEDIDOS --- */}
+        
         {orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 bg-white rounded-2xl border border-dashed border-gray-200 text-center">
             <div className="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mb-6">
@@ -104,7 +104,7 @@ export default async function ProfilePage() {
                 key={order.id} 
                 className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300"
               >
-                {/* Cabecera del Pedido (Gris) */}
+                
                 <div className="bg-gray-50/80 px-6 py-4 border-b border-gray-100 flex flex-wrap gap-y-4 justify-between items-center">
                     <div className="flex gap-8">
                         <div className="flex flex-col">
@@ -127,12 +127,11 @@ export default async function ProfilePage() {
                     </div>
                 </div>
 
-                {/* Contenido del Pedido */}
+               
                 <div className="p-6">
                     <div className="space-y-6">
                         {order.items.map((item) => (
                             <div key={item.id} className="flex gap-5 items-center group">
-                                {/* Imagen */}
                                 <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden relative border border-gray-100 shrink-0">
                                     {item.product.images[0] ? (
                                         <Image 
@@ -146,7 +145,6 @@ export default async function ProfilePage() {
                                     )}
                                 </div>
                                 
-                                {/* Info Producto */}
                                 <div className="flex-1 min-w-0">
                                     <h3 className="text-base font-bold text-gray-900 truncate font-serif">
                                         {item.product.name}
@@ -161,7 +159,6 @@ export default async function ProfilePage() {
                                     </div>
                                 </div>
 
-                                {/* Precio Total Item */}
                                 <div className="text-right">
                                     <p className="text-sm font-bold text-gray-900">
                                         ${(Number(item.price) * item.quantity).toLocaleString()}

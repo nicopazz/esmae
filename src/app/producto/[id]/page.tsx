@@ -2,11 +2,9 @@ import prisma from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-// 1. Importamos el icono de MessageCircle (o Phone si prefieres)
 import { ArrowLeft, Truck, ShieldCheck, MessageCircle } from "lucide-react";
 import AddToCartBtn from "@/components/AddToCartBtn";
 
-// Tipado para Next.js 15
 type Props = {
   params: Promise<{ id: string }>;
 };
@@ -14,7 +12,6 @@ type Props = {
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
 
-  // 1. Buscamos el producto
   const productRaw = await prisma.product.findUnique({
     where: { id: Number(id) },
     include: { images: true, category: true },
@@ -22,25 +19,25 @@ export default async function ProductPage({ params }: Props) {
 
   if (!productRaw) return notFound();
 
-  // 2. Convertimos el Decimal a Number
+
   const product = {
     ...productRaw,
     price: productRaw.price.toNumber(),
   };
 
-  // --- CONFIGURACIÓN WHATSAPP ---
+
 
   const PHONE_NUMBER = "543813921321";
   const message = `Hola Esmae! Estoy viendo el producto "${product.name}" y quería consultar...`;
   const whatsappUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(
     message
   )}`;
-  // -----------------------------
+  
 
   return (
     <div className="min-h-screen bg-white pt-20 md:pt-24 pb-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
-        {/* Botón Volver */}
+        
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-black mb-4 md:mb-8 transition-colors mt-4 md:mt-0"
@@ -49,7 +46,6 @@ export default async function ProductPage({ params }: Props) {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20">
-          {/* COLUMNA IZQUIERDA: IMÁGENES (Sin cambios) */}
           <div className="space-y-4">
             <div className="relative aspect-square bg-gray-100 rounded-xl overflow-hidden shadow-sm">
               {product.images[0] ? (
@@ -81,7 +77,7 @@ export default async function ProductPage({ params }: Props) {
             )}
           </div>
 
-          {/* COLUMNA DERECHA: INFO */}
+         
           <div className="flex flex-col justify-center">
             <span className="text-sm font-bold text-gray-400 uppercase tracking-widest mb-2">
               {product.category.name}
@@ -113,12 +109,12 @@ export default async function ProductPage({ params }: Props) {
               )}
             </div>
 
-            {/* SECCIÓN DE ACCIONES */}
+           
             <div className="mb-10 flex flex-col gap-3">
-              {/* 1. Botón Carrito */}
+              
               <AddToCartBtn product={product} />
 
-              {/* 2. Botón WhatsApp */}
+              
               <a
                 href={whatsappUrl}
                 target="_blank"
@@ -134,7 +130,7 @@ export default async function ProductPage({ params }: Props) {
                   tracking-wider sm:tracking-widest /* Espaciado de letras adaptativo */
                 `}
               >
-                {/* Icono que también se ajusta ligeramente */}
+                
                 <MessageCircle size={18} className="sm:w-5 sm:h-5" />
                 Consultar por WhatsApp
               </a>

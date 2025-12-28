@@ -4,14 +4,10 @@ export default function StorySection() {
   return (
     <section className="py-24 bg-[#121212] text-white relative overflow-hidden">
       
-      {/* --- PATRÓN DE PUNTOS DE FONDO (Efecto sutil) --- */}
-      {/* Esto crea esos puntitos grises suaves que se ven en tu imagen de referencia */}
       <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#ffffff_1px,transparent_1px)] bg-size-[20px_20px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
-          
-          {/* 1. IMAGEN */}
           <div className="relative h-100 md:h-125 w-full rounded-2xl overflow-hidden shadow-2xl border border-gray-800">
             <Image 
               src="https://images.unsplash.com/photo-1617103996702-96ff29b1c467?auto=format&fit=crop&q=80&w=800" 
@@ -21,12 +17,10 @@ export default function StorySection() {
             />
           </div>
 
-          {/* 2. TEXTO */}
           <div className="space-y-8">
             
             <h2 className="text-4xl md:text-5xl font-serif leading-tight">
               La belleza de lo <br />
-              {/* Color acento: Un tono cobre/tierra elegante */}
               <span className="italic text-[#C6A892]">artesanal.</span>
             </h2>
 
@@ -35,8 +29,6 @@ export default function StorySection() {
               <br /><br />
               No son solo objetos, son partes de tu historia.
             </p>
-
-            {/* STATS (Números grandes) */}
             <div className="flex gap-16 pt-6 border-t border-gray-800 mt-8">
               <div>
                 <span className="block text-4xl font-serif text-[#C6A892] mb-1">100%</span>

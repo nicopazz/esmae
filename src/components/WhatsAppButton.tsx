@@ -12,29 +12,25 @@ export default function WhatsAppButton() {
   }
 
   return (
-    
-
     <a
       href="https://wa.me/5493813921321" 
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat en WhatsApp"
-      // Posición fija
       className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 group"
     >
-      {/* 1. ANIMACIÓN SUTIL: Un halo suave que late lentamente (Pulse) */}
-      {/* -inset-1.5 hace que el anillo sea un poquito más grande que el botón */}
+
       <span className="absolute -inset-1.5 rounded-full bg-[#25D366] opacity-20 animate-pulse"></span>
 
-      {/* 2. BOTÓN PRINCIPAL */}
+      
       <div className="relative flex items-center justify-center p-3 md:p-4 bg-[#25D366] text-white rounded-full shadow-lg transition-all duration-300 hover:bg-[#20ba5a] hover:scale-110 hover:shadow-xl">
         
-        {/* Tooltip opcional (Solo visible en PC) */}
+       
         <span className="hidden md:block absolute right-full mr-3 bg-white text-gray-800 text-xs font-bold px-2 py-1 rounded shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none">
           ¡Escríbenos!
         </span>
 
-        {/* Icono SVG */}
+       
         <svg
           className="w-6 h-6 md:w-8 md:h-8"
           fill="currentColor"

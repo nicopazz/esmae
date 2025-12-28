@@ -13,10 +13,9 @@ interface ModalProps {
 
 export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [showSuccess, setShowSuccess] = useState(false); // Estado para el mensaje de "¡Agregado!"
-  const { addItem, items } = useCart(); // Traemos 'items' para chequear stock actual en carrito
+  const [showSuccess, setShowSuccess] = useState(false); 
+  const { addItem, items } = useCart();
 
-  // 1. Bloquear el scroll del cuerpo cuando se abre el modal
   useEffect(() => {
     if (isOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "unset";
@@ -25,8 +24,6 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
 
   if (!isOpen || !product) return null;
 
-  
-// Verificamos si ya alcanzamos el stock máximo de este producto en el carrito
   const cartItem = items.find(item => item.id === product.id);
   const currentQtyInCart = cartItem ? cartItem.quantity : 0;
   const isOutOfStock = currentQtyInCart >= (product.stock || 0);
@@ -41,25 +38,18 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
     onClose(); 
   };
 
-  // 3. Función para enviar a WhatsApp
   const handleConsultation = () => {
-    const phoneNumber = "5493815555555"; // Tu número real
+    const phoneNumber = "5493813921321"; 
     const message = `Hola Esmae, tengo una duda sobre el producto: *${product.name}*`;
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
 
   return (
-    // Fondo oscuro (Backdrop) con animación fade-in
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 animate-fade-in">
-      
-      {/* Clic afuera para cerrar */}
       <div className="absolute inset-0" onClick={onClose}></div>
-
-      {/* Tarjeta del Modal con animación zoom-in */}
       <div className="relative bg-white rounded-sm shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col md:flex-row animate-zoom-in">
         
-        {/* Botón X Cerrar */}
         <button 
           onClick={onClose}
           className="absolute top-4 right-4 z-10 p-2 text-gray-400 hover:text-black transition-colors bg-white/50 rounded-full"
@@ -69,7 +59,6 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
           </svg>
         </button>
 
-        {/* COLUMNA IZQUIERDA: Imagen */}
         <div className="w-full md:w-1/2 bg-gray-100 h-64 md:h-auto relative">
           {product.images && product.images[0] ? (
             <img 
@@ -82,7 +71,6 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
           )}
         </div>
 
-        {/* COLUMNA DERECHA: Datos */}
         <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center text-left">
           
           <h2 className="text-3xl font-serif text-gray-900 mb-2">{product.name}</h2>
@@ -91,13 +79,10 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
           </p>
 
           <div className="space-y-6">
-            {/* Descripción */}
             <div>
               <p className="text-xs font-bold tracking-widest text-gray-400 uppercase mb-1">Descripción</p>
               <p className="text-gray-600 text-sm leading-relaxed">{product.description}</p>
             </div>
-
-            {/* Detalles Técnicos */}
             <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
               {product.dimensions && (
                 <div>
@@ -114,16 +99,13 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
             </div>
           </div>
 
-          {/* ZONA DE ACCIONES */}
           <div className="mt-8 space-y-3">
-            
-           {/* Botón Principal: AGREGAR AL PEDIDO */}
             <button 
               onClick={handleAddToOrder}
-              disabled={showSuccess || isOutOfStock || product.stock === 0} // <--- Lógica de bloqueo
+              disabled={showSuccess || isOutOfStock || product.stock === 0}
               className={`w-full py-4 px-6 uppercase tracking-wider text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                 isOutOfStock || product.stock === 0
-                  ? "bg-gray-300 text-gray-500 cursor-not-allowed" // Estilo deshabilitado
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed" 
                   : showSuccess 
                     ? "bg-green-700 text-white" 
                     : "bg-black text-white hover:bg-gray-800"
@@ -145,14 +127,12 @@ export default function ProductModal({ product, isOpen, onClose }: ModalProps) {
               )}
             </button>
 
-            {/* Botón Secundario: Consultar solo este */}
             <button 
               onClick={handleConsultation}
               className="w-full bg-white border border-gray-200 text-gray-900 py-3 px-6 uppercase tracking-wider text-xs font-bold hover:bg-gray-50 transition-colors"
             >
               Consultar duda por WhatsApp
             </button>
-            
           </div>
           
           <p className="text-center text-xs text-gray-400 mt-4">

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import bcrypt from "bcryptjs"; // <--- Importamos bcrypt
+import bcrypt from "bcryptjs";
 
 type Params = Promise<{ id: string }>;
 
@@ -24,7 +24,7 @@ export async function DELETE(
   }
 }
 
-// EDITAR USUARIO (Rol, Nombre, Email, Password)
+// EDITAR USUARIO 
 export async function PATCH(
   request: Request,
   { params }: { params: Params }
@@ -33,7 +33,7 @@ export async function PATCH(
     const { id } = await params;
     const body = await request.json();
     
-    // Preparamos el objeto de actualización dinámicamente
+   
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dataToUpdate: any = {};
 
@@ -41,7 +41,7 @@ export async function PATCH(
     if (body.name) dataToUpdate.name = body.name;
     if (body.email) dataToUpdate.email = body.email;
     
-    // Si envían password, la encriptamos antes de guardar
+    
     if (body.password) {
         dataToUpdate.password = await bcrypt.hash(body.password, 10);
     }

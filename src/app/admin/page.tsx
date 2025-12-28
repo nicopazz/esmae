@@ -13,7 +13,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  // 1. OBTENCIÓN DE DATOS
+  // OBTENCIÓN DE DATOS
   const [
     totalRevenueData,
     totalOrders,
@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
     // Tablas Dashboard
     prisma.order.findMany({ take: 5, orderBy: { createdAt: "desc" } }),
     
-    // Productos Stock Bajo (con imágenes)
+    // Productos Stock Bajo 
     prisma.product.findMany({ 
       where: { stock: { lte: 5 } }, 
       take: 5, 
@@ -82,7 +82,6 @@ export default async function AdminDashboard() {
         </div>
       </div>
 
-      {/* 1. KPIs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
               <div className="flex justify-between mb-4">
@@ -119,13 +118,13 @@ export default async function AdminDashboard() {
           </div>
       </div>
 
-      {/* 2. Sección Principal: Tabla + Gráfico */}
+      
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
-          {/* Columna Izquierda (Tabla y Gráfico) */}
+          
           <div className="lg:col-span-2 space-y-8">
               
-              {/* --- 1. ÚLTIMOS PEDIDOS (Primero) --- */}
+              
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
                   <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                       <h3 className="font-bold text-gray-900 text-sm uppercase tracking-wide">Últimos Pedidos</h3>
@@ -156,7 +155,7 @@ export default async function AdminDashboard() {
                   </div>
               </div>
 
-              {/* --- 2. GRÁFICO PROFESIONAL (Segundo) --- */}
+              
               <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm relative overflow-hidden">
                   <div className="flex justify-between items-end mb-6">
                     <div>
@@ -180,7 +179,7 @@ export default async function AdminDashboard() {
                             {chartData.map((d, i) => (
                                 <div key={i} className="group relative flex h-full w-full flex-col justify-end items-center">
                                     
-                                    {/* Tooltip */}
+                                   
                                     <div className="absolute bottom-full mb-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:-translate-y-1 pointer-events-none z-20">
                                         <div className="bg-gray-900 text-white text-[10px] font-bold py-1.5 px-3 rounded shadow-xl whitespace-nowrap relative">
                                             {formatMoney(d.total)}
@@ -188,7 +187,7 @@ export default async function AdminDashboard() {
                                         </div>
                                     </div>
 
-                                    {/* Barra */}
+                                    
                                     <div className="relative flex-1 w-full max-w-8 bg-gray-50 rounded-t-lg overflow-hidden flex items-end">
                                         <div 
                                             className="w-full bg-gray-900 transition-all duration-1000 ease-out group-hover:bg-black rounded-t-lg relative"
@@ -198,7 +197,7 @@ export default async function AdminDashboard() {
                                         </div>
                                     </div>
 
-                                    {/* Día */}
+                                   
                                     <span className="mt-3 text-[10px] font-bold text-gray-400 uppercase tracking-wider group-hover:text-gray-900 transition-colors">
                                         {d.day}
                                     </span>
@@ -211,7 +210,7 @@ export default async function AdminDashboard() {
 
           </div>
 
-          {/* Columna Derecha (Stock Bajo) */}
+         
           <div className="lg:col-span-1">
               <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col">
                   <div className="p-4 border-b border-gray-100 bg-red-50/50 flex items-center gap-2">

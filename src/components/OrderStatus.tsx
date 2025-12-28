@@ -23,7 +23,7 @@ export default function OrderStatus({ id, initialStatus }: { id: number, initial
 
       setStatus(newStatus);
       toast.success(`Estado cambiado a: ${newStatus.toUpperCase()}`);
-      router.refresh(); // Refresca la página para mover el pedido de pestaña si es necesario
+      router.refresh(); 
     } catch (error) {
       console.error(error);
       toast.error("Error al actualizar estado");
@@ -36,8 +36,8 @@ export default function OrderStatus({ id, initialStatus }: { id: number, initial
     switch (s) {
       case "pendiente": return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "pagada": return "bg-green-100 text-green-800 border-green-200";
-      case "entregada": return "bg-blue-100 text-blue-800 border-blue-200"; // Se irá al historial
-      case "cancelada": return "bg-red-100 text-red-800 border-red-200";     // Se irá al historial
+      case "entregada": return "bg-blue-100 text-blue-800 border-blue-200"; 
+      case "cancelada": return "bg-red-100 text-red-800 border-red-200";     
       default: return "bg-gray-100 text-gray-800";
     }
   };
@@ -61,7 +61,6 @@ export default function OrderStatus({ id, initialStatus }: { id: number, initial
         <option value="cancelada">Cancelada</option>
       </select>
       
-      {/* Flechita decorativa */}
       <ChevronDown size={12} className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none opacity-50" />
     </div>
   );

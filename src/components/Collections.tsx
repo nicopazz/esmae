@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image"; // Usamos Image para optimizar
+import Image from "next/image";
 
 const collections = [
   {
@@ -26,8 +26,6 @@ export default function Collections() {
   return (
     <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-8 mt-15">
-        
-        {/* Título */}
         <div className="text-center mb-16 space-y-2">
           <span className="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase">
             Explora por categoría
@@ -37,7 +35,6 @@ export default function Collections() {
           </h2>
         </div>
 
-        {/* Grid de Colecciones */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
           {collections.map((item) => (
             <Link 
@@ -45,7 +42,7 @@ export default function Collections() {
               key={item.id}
               className="group cursor-pointer block hover:text-[#C6A892]"
             >
-              {/* Imagen */}
+              
               <div className="relative overflow-hidden rounded-lg aspect-4/5 mb-6 bg-gray-100 shadow-sm">
                 <Image 
                   src={item.image} 
@@ -57,7 +54,7 @@ export default function Collections() {
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
               </div>
 
-              {/* Textos */}
+             
               <div className="text-center">
                 <h3 className="text-2xl font-serif  mb-2  decoration-1 underline-offset-4 decoration-gray-400">
                   {item.name}

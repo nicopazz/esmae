@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import UserRow from "@/components/UserRow";
 
 export default async function AdminUsersPage() {
-  // Obtenemos todos los usuarios
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
   });

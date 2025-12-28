@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 import { Trash2, Shield, User as UserIcon, ChevronDown, Pencil } from "lucide-react";
-import EditUserModal from "./EditUserModal"; // Importamos el modal nuevo
+import EditUserModal from "./EditUserModal"; 
 
 type UserProps = {
   user: {
@@ -19,9 +19,9 @@ type UserProps = {
 export default function UserRow({ user }: UserProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false); // Estado para abrir/cerrar modal
+  const [isEditOpen, setIsEditOpen] = useState(false); 
 
-  // Función para cambiar rol (Select)
+  
   const handleRoleChange = async (newRole: string) => {
     if (newRole === user.role) return;
     setLoading(true);
@@ -39,7 +39,7 @@ export default function UserRow({ user }: UserProps) {
     finally { setLoading(false); }
   };
 
-  // Función de ELIMINAR CON CONFIRMACIÓN (Estilo Toast)
+  
   const handleDeleteClick = () => {
     toast((t) => (
       <div className="flex flex-col gap-3 p-1 min-w-62.5">
@@ -84,7 +84,6 @@ export default function UserRow({ user }: UserProps) {
   return (
     <>
       <tr className="hover:bg-gray-50 transition-colors group">
-        {/* INFO USUARIO */}
         <td className="px-6 py-4">
           <div className="flex items-center gap-3">
             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm ${
@@ -99,7 +98,6 @@ export default function UserRow({ user }: UserProps) {
           </div>
         </td>
 
-        {/* SELECTOR DE ROL */}
         <td className="px-6 py-4">
           <div className="relative inline-block w-40">
             <select
@@ -133,11 +131,9 @@ export default function UserRow({ user }: UserProps) {
           {new Date(user.createdAt).toLocaleDateString()}
         </td>
 
-        {/* ACCIONES (EDITAR / ELIMINAR) */}
         <td className="px-6 py-4 text-right">
           <div className="flex items-center justify-end gap-2">
-            
-            {/* Botón Editar */}
+
             <button
                 onClick={() => setIsEditOpen(true)}
                 disabled={loading}
@@ -147,7 +143,6 @@ export default function UserRow({ user }: UserProps) {
                 <Pencil size={18} />
             </button>
 
-            {/* Botón Eliminar */}
             <button
               onClick={handleDeleteClick}
               disabled={loading}
@@ -160,7 +155,6 @@ export default function UserRow({ user }: UserProps) {
         </td>
       </tr>
 
-      {/* Renderizamos el Modal aquí mismo */}
       <EditUserModal 
         user={user} 
         isOpen={isEditOpen} 
