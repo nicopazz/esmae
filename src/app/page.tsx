@@ -10,7 +10,7 @@ export default async function Home() {
   const rawProducts = await prisma.product.findMany({
     include: { category: true, images: true },
     orderBy: { createdAt: 'desc' }, 
-    take: 8 
+    
   })
 
   const products = rawProducts.map((product) => ({

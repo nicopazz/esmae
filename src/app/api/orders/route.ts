@@ -74,7 +74,7 @@ export async function POST(request: Request) {
       // Email para el ADMIN
       await resend.emails.send({
         from: 'Esmae Web <onboarding@resend.dev>',
-        to: ['nicopazmalizia@gmail.com'], 
+        to: ['esmae.espejos@gmail.com'], 
         subject: `¡Nueva Venta #${newOrder.id}! 🤑`,
         html: `
           <div style="font-family: sans-serif; padding: 20px;">
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
             <p><strong>Cliente:</strong> ${customer.name}</p>
             <p><strong>WhatsApp:</strong> <a href="https://wa.me/${customer.phone}">${customer.phone}</a></p>
             <hr />
-            <a href="http://localhost:3000/admin/orders" style="background: black; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            <a href="${process.env.NEXTAUTH_URL}/admin/orders" style="background: black; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
               Gestionar Pedido
             </a>
           </div>
