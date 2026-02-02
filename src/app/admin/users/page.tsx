@@ -1,6 +1,9 @@
 import prisma from "@/lib/prisma";
 import UserRow from "@/components/UserRow";
 
+// 👇 Esta línea hace que la página sea dinámica y evita el error de conexión en el Build
+export const dynamic = 'force-dynamic';
+
 export default async function AdminUsersPage() {
   const users = await prisma.user.findMany({
     orderBy: { createdAt: "desc" },
